@@ -6,6 +6,13 @@ jdk:
 services:
   - docker
 
+cache:
+  directories:
+    - $HOME/.m2
+
+env:
+  - DOCKER_IMAGE=stefan314/proep_backend
+
 jobs:
   include:
     - stage: test
@@ -14,7 +21,4 @@ jobs:
     - stage: deploy
       script:
         - ./mvnw package
-        - docker build -t stefan314/proep-backend .
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker push stefan314/proep-backend
-
+        - ./scripts/docker_push.sh
