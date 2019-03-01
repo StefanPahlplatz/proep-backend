@@ -2,3 +2,36 @@ language: java
 
 jdk:
   - oraclejdk8
+
+addons:
+  ssh_known_hosts:
+    - fozzie.inogo.nl
+
+cache:
+  directories:
+    - "$HOME/.m2"
+
+jobs:
+  include:
+    - stage: test
+      script:
+        - "./mvnw test"
+
+    - stage: deploy
+      if: branch = master && type = push
+      env:
+        - DOCKER_IMAGE=stefan314/proep_backend
+      services:
+        - docker
+      before_install:
+        - openssl aes-256-cbc -K $encrypted_9cf23a29d835_key -iv $encrypted_9cf23a29d835_iv -in .travis/deploy_rsa.enc -out .travis/id_rsa -d
+        - eval "$(ssh-agent -s)"
+        - cp .travis/id_rsa ~/.ssh/id_rsa
+        - chmod 600 ~/.ssh/id_rsa
+        - ssh-add ~/.ssh/id_rsa
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      script:
+        - "./mvnw package"
+        - docker build -t $DOCKER_IMAGE .
+        - docker push $DOCKER_IMAGE
+        - ssh inogo@fozzie.inogo.nl "cd proep-backend && docker-compose pull && docker-compose up --force-recreate --build -d"
