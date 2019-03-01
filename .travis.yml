@@ -16,7 +16,9 @@ jobs:
     - stage: test
       script:
         - "./mvnw test"
+
     - stage: deploy
+      if: branch = master && type = push
       env:
         - DOCKER_IMAGE=stefan314/proep_backend
       services:
@@ -33,5 +35,3 @@ jobs:
         - docker build -t $DOCKER_IMAGE .
         - docker push $DOCKER_IMAGE
         - ssh inogo@fozzie.inogo.nl "cd proep-backend && docker-compose pull && docker-compose up --force-recreate --build -d"
-      # on:
-      #   branch: master
