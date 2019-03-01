@@ -10,10 +10,11 @@ jobs:
   include:
     - stage: test
       script: 
-        - ./mvnw package
+        - ./mvnw test
     - stage: deploy
       script:
-        - echo `date`
-      branches:
-        only: master
+        - ./mvnw package
+        - docker build -t stefan314/proep-backend .
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker push stefan314/proep-backend
 
