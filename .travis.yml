@@ -6,19 +6,25 @@ jdk:
 services:
   - docker
 
+addons:
+  ssh_known_hosts:
+    - fozzie.inogo.nl
+
 cache:
   directories:
-    - $HOME/.m2
+    - "$HOME/.m2"
 
 env:
   - DOCKER_IMAGE=stefan314/proep_backend
 
 jobs:
   include:
-    # - stage: test
-    #   script: 
-    #     - ./mvnw test
     - stage: deploy
+      before_install:
+        - openssl aes-256-cbc -K $encrypted_9cf23a29d835_key -iv $encrypted_9cf23a29d835_iv
+          -in .travis/deploy_rsa.enc -out .travis/deploy_rsa -d
       script:
-        - ./mvnw package
-        - ./scripts/docker_push.sh
+        - "./mvnw package"
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t $DOCKER_IMAGE .
+        - docker push $DOCKER_IMAGE
