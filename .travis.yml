@@ -19,13 +19,12 @@ env:
 
 jobs:
   include:
-    - stage: test
-      script:
-        - "./mvnw test"
+    # - stage: test
+    #   script:
+    #     - "./mvnw test"
     - stage: deploy
       before_install:
-        - openssl aes-256-cbc -K $encrypted_9cf23a29d835_key -iv $encrypted_9cf23a29d835_iv
-          -in .travis/deploy_rsa.enc -out .travis/deploy_rsa -d
+        - openssl aes-256-cbc -K $encrypted_9cf23a29d835_key -iv $encrypted_9cf23a29d835_iv -in .travis/deploy_rsa.enc -out .travis/deploy_rsa -d
         - eval "$(ssh-agent -s)"
         - cp .travis/id_rsa ~/.ssh/id_rsa
         - chmod 600 ~/.ssh/id_rsa
