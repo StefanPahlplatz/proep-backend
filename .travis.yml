@@ -3,9 +3,6 @@ language: java
 jdk:
   - oraclejdk8
 
-services:
-  - docker
-
 addons:
   ssh_known_hosts:
     - fozzie.inogo.nl
@@ -14,15 +11,16 @@ cache:
   directories:
     - "$HOME/.m2"
 
-env:
-  - DOCKER_IMAGE=stefan314/proep_backend
-
 jobs:
   include:
-    # - stage: test
-    #   script:
-    #     - "./mvnw test"
+    - stage: test
+      script:
+        - "./mvnw test"
     - stage: deploy
+      env:
+        - DOCKER_IMAGE=stefan314/proep_backend
+      services:
+        - docker
       before_install:
         - openssl aes-256-cbc -K $encrypted_9cf23a29d835_key -iv $encrypted_9cf23a29d835_iv -in .travis/deploy_rsa.enc -out .travis/id_rsa -d
         - eval "$(ssh-agent -s)"
@@ -34,6 +32,6 @@ jobs:
         - "./mvnw package"
         - docker build -t $DOCKER_IMAGE .
         - docker push $DOCKER_IMAGE
-        - ssh inogo@fozzie.inogo.nl "cd proep-backend && docker-compose pull && docker-compose restart"
+        - ssh inogo@fozzie.inogo.nl "cd proep-backend && docker-compose pull && docker-compose up --force-recreate --build -d"
       # on:
       #   branch: master
