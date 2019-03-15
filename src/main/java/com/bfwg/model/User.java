@@ -43,6 +43,17 @@ public class User implements UserDetails, Serializable {
   @Column(name = "lastname")
   private String lastname;
 
+  @Column(name = "address")
+  private String address;
+
+  @Column(name = "city")
+  private String city;
+
+  @Column(name = "email")
+  private String email;
+
+  @Column(name = "telephone")
+  private String telephone;
 
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinTable(name = "user_authority",
@@ -89,6 +100,38 @@ public class User implements UserDetails, Serializable {
   public void setLastname(String lastname) {
 
     this.lastname = lastname;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getTelephone() {
+    return telephone;
+  }
+
+  public void setTelephone(String telephone) {
+    this.telephone = telephone;
   }
 
   public void setAuthorities(List<Authority> authorities) {
