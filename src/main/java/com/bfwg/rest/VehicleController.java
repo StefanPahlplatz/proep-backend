@@ -6,6 +6,7 @@ import com.bfwg.model.User;
 import com.bfwg.model.Vehicle;
 import com.bfwg.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.config.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -85,7 +86,6 @@ public class VehicleController {
         }
 
         Vehicle vehicle = new Vehicle();
-        vehicle.setId(existVehicle.getId());
         vehicle.setMileage(existVehicle.getMileage());
         vehicle.setColour(existVehicle.getColour());
         vehicle.setModel(existVehicle.getModel());
@@ -118,6 +118,15 @@ public class VehicleController {
         return new ResponseEntity<>(vehicles,HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteVehicle(@PathVariable(value = "id") Long vehicleId) {
+        Vehicle vehicle = this.vehicleService.findById(vehicleId);
+        if(vehicle == null){
+            return new ResponseEntity<>("there was no vehicle with that id please refresh the page", HttpStatus.NOT_FOUND);
+        }
+        this.vehicleService.delete(vehicle);
 
+        return ResponseEntity.ok().build();
+    }
 
 }

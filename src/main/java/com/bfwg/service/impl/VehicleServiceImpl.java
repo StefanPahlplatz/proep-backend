@@ -52,6 +52,9 @@ public class VehicleServiceImpl implements VehicleService {
         vehicle.setModel(vehiclerequest.getModel());
         vehicle.setColour(vehiclerequest.getColour());
         vehicle.setMileage(vehiclerequest.getMileage());
+        vehicle.setPrice(vehiclerequest.getPrice());
+        vehicle.setAvailables(vehiclerequest.getAvailables());
+        vehicle.setUser(vehiclerequest.getUser());
         this.vehicleRepository.save(vehicle);
         return vehicle;
     }
