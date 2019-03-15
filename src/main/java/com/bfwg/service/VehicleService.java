@@ -2,6 +2,7 @@ package com.bfwg.service;
 
 import com.bfwg.model.User;
 import com.bfwg.model.Vehicle;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
 import java.util.List;
