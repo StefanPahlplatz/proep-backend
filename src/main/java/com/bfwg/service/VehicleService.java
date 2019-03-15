@@ -6,7 +6,7 @@ import com.bfwg.model.Vehicle;
 import java.util.List;
 
 public interface VehicleService {
-    List<Vehicle> findByOwner(User owner);
+    List<Vehicle> findByUser(User user);
 
     List<Vehicle> findByMake(String make);
 
@@ -20,5 +20,7 @@ public interface VehicleService {
 
     void delete(Vehicle vehicle);
 
-    Vehicle findByVin(String vin);
+    Vehicle findByRegplate(String regplate);
+
+    List<Vehicle> findByPriceBetween (Double pricelower, Double priceupper);
 }

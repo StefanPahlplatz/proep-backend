@@ -5,18 +5,18 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.GregorianCalendar;
+import java.util.List;
 
 @Entity
 @Table(name = "VEHICLE")
 public class Vehicle implements Serializable {
     @Id
-    @Column(name = "id")
+    @Column(name = "id", insertable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "vin")
-    private String vin;
+    @Column(name = "regplate")
+    private String regplate;
 
     @Column(name = "colour")
     private String colour;
@@ -30,21 +30,29 @@ public class Vehicle implements Serializable {
     @Column(name = "make")
     private String make;
 
+    @Column(name = "price")
+    private Double price;
+
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @Column(name = "owner")
-    private User owner;
+    private User user;
+
+    @OneToMany(mappedBy = "vehicle")
+    private List<Available> availables;
+
+
 
     public Vehicle(){}
 
-    public Vehicle(String make, String model, int mileage, String vin, String colour, User owner){
+    public Vehicle(String make, String model, int mileage, String regplate, String colour,Double price, User user){
         this.make = make;
         this.model = model;
-        this.vin = vin;
+        this.regplate = regplate;
         this.mileage = mileage;
         this.colour = colour;
-        this.owner = owner;
+        this.price = price;
+        this.user = user;
     }
 
     public Long getId() {
@@ -55,12 +63,12 @@ public class Vehicle implements Serializable {
         this.id = id;
     }
 
-    public String getVin() {
-        return vin;
+    public String getRegplate() {
+        return regplate;
     }
 
-    public void setVin(String vin) {
-        this.vin = vin;
+    public void setRegplate(String regplate) {
+        this.regplate = regplate;
     }
 
     public String getColour() {
@@ -95,11 +103,27 @@ public class Vehicle implements Serializable {
         this.make = make;
     }
 
-    public User getOwner() {
-        return owner;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Available> getAvailables() {
+        return availables;
+    }
+
+    public void setAvailables(List<Available> availables) {
+        this.availables = availables;
     }
 }

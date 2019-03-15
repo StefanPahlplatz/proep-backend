@@ -18,39 +18,35 @@ public class VehicleServiceImpl implements VehicleService {
     private VehicleRepository vehicleRepository;
 
     @Override
-    public List<Vehicle> findByOwner(User owner) {
-        List<Vehicle> vehicles = vehicleRepository.findByOwner(owner);
-        return vehicles;
+    public List<Vehicle> findByUser(User user) {
+        return vehicleRepository.findByUser(user);
+
     }
 
     @Override
     public List<Vehicle> findByMake(String make) {
-        List<Vehicle> vehicles = vehicleRepository.findByMake(make);
-        return vehicles;
+        return vehicleRepository.findByMake(make);
     }
 
     @Override
     public List<Vehicle> findByModel(String model) {
-        List<Vehicle> vehicles = vehicleRepository.findByModel(model);
-        return vehicles;
+        return vehicleRepository.findByModel(model);
     }
 
     @Override
     public Vehicle findById(Long id) {
-        Vehicle vehicle = vehicleRepository.findOne(id);
-        return vehicle;
+        return vehicleRepository.findOne(id);
     }
 
     @Override
     public List<Vehicle> findAll() {
-        List<Vehicle> vehicles = vehicleRepository.findAll();
-        return vehicles;
+        return vehicleRepository.findAll();
     }
 
     @Override
     public Vehicle save(Vehicle vehiclerequest) {
         Vehicle vehicle = new Vehicle();
-        vehicle.setVin(vehiclerequest.getVin());
+        vehicle.setRegplate(vehiclerequest.getRegplate());
         vehicle.setMake(vehiclerequest.getMake());
         vehicle.setModel(vehiclerequest.getModel());
         vehicle.setColour(vehiclerequest.getColour());
@@ -66,8 +62,13 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public Vehicle findByVin(String vin) {
-        return this.vehicleRepository.findByVin(vin);
+    public Vehicle findByRegplate(String regplate) {
+        return this.vehicleRepository.findByRegplate(regplate);
+    }
+
+    @Override
+    public List<Vehicle> findByPriceBetween(Double pricelower, Double priceupper) {
+        return this.vehicleRepository.findByPriceBetween(pricelower,priceupper);
     }
 
 
