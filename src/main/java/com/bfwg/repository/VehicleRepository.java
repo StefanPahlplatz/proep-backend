@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.xml.stream.Location;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -15,4 +16,5 @@ public interface VehicleRepository extends JpaRepository<Vehicle,Long> {
     List<Vehicle> findByModel(String model);
     Vehicle findByRegplate(String regplate);
     List<Vehicle> findByPriceBetween (Double pricelower, Double priceupper);
+    List<Vehicle> findByAvailablesStartdateBeforeAndAvailablesEnddateAfter (Date startdate, Date enddate);
 }

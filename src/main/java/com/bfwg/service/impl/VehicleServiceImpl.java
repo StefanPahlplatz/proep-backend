@@ -9,6 +9,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -69,6 +70,11 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public List<Vehicle> findByPriceBetween(Double pricelower, Double priceupper) {
         return this.vehicleRepository.findByPriceBetween(pricelower,priceupper);
+    }
+
+    @Override
+    public List<Vehicle> findByAvailablesStartdateBeforeAndAvailablesEnddateAfter(Date startdate, Date enddate) {
+        return this.vehicleRepository.findByAvailablesStartdateBeforeAndAvailablesEnddateAfter(startdate,enddate);
     }
 
 

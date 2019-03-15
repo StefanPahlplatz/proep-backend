@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.ws.rs.core.GenericEntity;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -26,23 +28,41 @@ public class VehicleController {
     VehicleService vehicleService;
 
     @RequestMapping( method = GET, value="/all")
-    public List<Vehicle> getAllVehicles(){
-        return this.vehicleService.findAll();
+    public ResponseEntity<?> getAllVehicles(){
+        List<Vehicle> vehicles = this.vehicleService.findAll();
+
+        if(vehicles.isEmpty()){
+            return new ResponseEntity<>("There were no vehicles in the database",HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(vehicles,HttpStatus.OK);
     }
 
     @RequestMapping( method = GET, value="/id/{vehicleid}")
-    public Vehicle findById(@PathVariable (value = "vehicleid")Long vehicleid){
-        return this.vehicleService.findById(vehicleid);
+    public ResponseEntity findById(@PathVariable (value = "vehicleid")Long vehicleid){
+        Vehicle vehicle = this.vehicleService.findById(vehicleid);
+        if(vehicle == null){
+            return new ResponseEntity<>("There were no vehicles with the id "+vehicleid,HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(vehicle,HttpStatus.OK);
     }
 
     @RequestMapping (method = GET, value="/make/{vehiclemake}")
-    public List<Vehicle> findByMake(@PathVariable (value = "vehiclemake")String vehiclemake){
-        return this.vehicleService.findByMake(vehiclemake);
+    public ResponseEntity<?> findByMake(@PathVariable (value = "vehiclemake")String vehiclemake){
+        List<Vehicle> vehicles = this.vehicleService.findByMake(vehiclemake);
+        if(vehicles.isEmpty()){
+            return new ResponseEntity<>("There were no vehicles with the car make "+vehiclemake,HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(vehicles,HttpStatus.OK);
     }
 
     @RequestMapping (method = POST, value="/user")
-    public List<Vehicle> findByOwner (@RequestBody User user){
-        return this.vehicleService.findByUser(user);
+    public ResponseEntity<?> findByOwner (@RequestBody User user){
+
+        List<Vehicle> vehicles = this.vehicleService.findByUser(user);
+        if(vehicles.isEmpty()){
+            return new ResponseEntity<>("The user "+user.getUsername()+" owns no cars",HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(vehicles,HttpStatus.OK);
     }
 
     @RequestMapping(method = POST, value = "/")
@@ -56,20 +76,48 @@ public class VehicleController {
     }
 
     @PutMapping("/update/{vehicleid}")
-    public Vehicle updateVehicle(@PathVariable (value = "vehicleid") Long vehicleid,
+    public ResponseEntity updateVehicle(@PathVariable (value = "vehicleid") Long vehicleid,
                                  @Valid @RequestBody Vehicle vehiclerequest){
         Vehicle existVehicle = this.vehicleService.findById(vehicleid);
+
         if(existVehicle == null){
-            return null;///throw new ResourceNotFoundException("VehicleId " + vehicleid + " not found"); not working
+            return new ResponseEntity<>("there was no vehicle with the id "+vehicleid,HttpStatus.NOT_FOUND);
         }
-        return this.vehicleService.save(vehiclerequest);
+
+        Vehicle vehicle = new Vehicle();
+        vehicle.setId(existVehicle.getId());
+        vehicle.setMileage(existVehicle.getMileage());
+        vehicle.setColour(existVehicle.getColour());
+        vehicle.setModel(existVehicle.getModel());
+        vehicle.setMake(existVehicle.getMake());
+        vehicle.setRegplate(existVehicle.getRegplate());
+        vehicle.setPrice(existVehicle.getPrice());
+        vehicle.setAvailables(existVehicle.getAvailables());
+        vehicle.setUser(existVehicle.getUser());
+
+        return new ResponseEntity<>(vehicle,HttpStatus.OK);
     }
 
     @RequestMapping("/price/lower/{pricelower}/upper/{priceupper}")
-    public List<Vehicle> findByPriceBetween(@PathVariable (value = "pricelower") Double pricelower,
+    public ResponseEntity<?> findByPriceBetween(@PathVariable (value = "pricelower") Double pricelower,
                                             @PathVariable (value = "priceupper") Double priceupper){
-        return this.vehicleService.findByPriceBetween(pricelower,priceupper);
+        List<Vehicle> vehicles = this.vehicleService.findByPriceBetween(pricelower,priceupper);
+        if(vehicles.isEmpty()){
+            return new ResponseEntity<>("no vehicles found between the price of "+pricelower+" and "+priceupper,HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(vehicles,HttpStatus.OK);
     }
+
+    @RequestMapping("/date/start/{startdate}/end/{enddate}")
+    public ResponseEntity<?> findByPriceBetween(@PathVariable (value = "startdate") Date startdate,
+                                            @PathVariable (value = "enddate") Date enddate){
+        List<Vehicle> vehicles = this.vehicleService.findByAvailablesStartdateBeforeAndAvailablesEnddateAfter(startdate,enddate);
+        if(vehicles.isEmpty()){
+            return new ResponseEntity<>("No vehicles found between the dates "+startdate.toString()+" and "+enddate.toString(),HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(vehicles,HttpStatus.OK);
+    }
+
 
 
 }
