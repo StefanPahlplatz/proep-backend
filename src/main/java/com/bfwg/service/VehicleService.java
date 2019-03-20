@@ -1,9 +1,8 @@
 package com.bfwg.service;
 
+import com.bfwg.model.Available;
 import com.bfwg.model.User;
 import com.bfwg.model.Vehicle;
-import org.springframework.http.ResponseEntity;
-
 import java.util.Date;
 import java.util.List;
 
@@ -22,9 +21,9 @@ public interface VehicleService {
 
     void delete(Vehicle vehicle);
 
-    Vehicle findByRegplate(String regplate);
+    Vehicle findByRegistration(String registration);
 
     List<Vehicle> findByPriceBetween (Double pricelower, Double priceupper);
 
-    List<Vehicle> findByAvailablesStartdateBeforeAndAvailablesEnddateAfter (Date startdate, Date enddate);
+    List<Vehicle> findBySearchParameters(String colour,String make,String model, Double minprice, Double maxprice, List<Available> availables);
 }

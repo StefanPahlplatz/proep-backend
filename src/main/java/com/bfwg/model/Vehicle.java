@@ -15,8 +15,8 @@ public class Vehicle implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "regplate")
-    private String regplate;
+    @Column(name = "registration")
+    private String registration;
 
     @Column(name = "colour")
     private String colour;
@@ -35,7 +35,6 @@ public class Vehicle implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @OneToMany(mappedBy = "vehicle")
@@ -45,10 +44,10 @@ public class Vehicle implements Serializable {
 
     public Vehicle(){}
 
-    public Vehicle(String make, String model, int mileage, String regplate, String colour,Double price, User user){
+    public Vehicle(String make, String model, int mileage, String registration, String colour, Double price, User user){
         this.make = make;
         this.model = model;
-        this.regplate = regplate;
+        this.registration = registration;
         this.mileage = mileage;
         this.colour = colour;
         this.price = price;
@@ -63,12 +62,12 @@ public class Vehicle implements Serializable {
         this.id = id;
     }
 
-    public String getRegplate() {
-        return regplate;
+    public String getRegistration() {
+        return registration;
     }
 
-    public void setRegplate(String regplate) {
-        this.regplate = regplate;
+    public void setRegistration(String registration) {
+        this.registration = registration;
     }
 
     public String getColour() {

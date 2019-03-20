@@ -1,5 +1,6 @@
 package com.bfwg.service.impl;
 
+import com.bfwg.model.Available;
 import com.bfwg.model.User;
 import com.bfwg.model.Vehicle;
 import com.bfwg.repository.VehicleRepository;
@@ -46,17 +47,8 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public Vehicle save(Vehicle vehiclerequest) {
-        Vehicle vehicle = new Vehicle();
-        vehicle.setRegplate(vehiclerequest.getRegplate());
-        vehicle.setMake(vehiclerequest.getMake());
-        vehicle.setModel(vehiclerequest.getModel());
-        vehicle.setColour(vehiclerequest.getColour());
-        vehicle.setMileage(vehiclerequest.getMileage());
-        vehicle.setPrice(vehiclerequest.getPrice());
-        vehicle.setAvailables(vehiclerequest.getAvailables());
-        vehicle.setUser(vehiclerequest.getUser());
-        this.vehicleRepository.save(vehicle);
-        return vehicle;
+
+        return this.vehicleRepository.save(vehiclerequest);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -66,8 +58,8 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public Vehicle findByRegplate(String regplate) {
-        return this.vehicleRepository.findByRegplate(regplate);
+    public Vehicle findByRegistration(String registration) {
+        return this.vehicleRepository.findByRegistration(registration);
     }
 
     @Override
@@ -76,8 +68,8 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public List<Vehicle> findByAvailablesStartdateBeforeAndAvailablesEnddateAfter(Date startdate, Date enddate) {
-        return this.vehicleRepository.findByAvailablesStartdateBeforeAndAvailablesEnddateAfter(startdate,enddate);
+    public List<Vehicle> findBySearchParameters(String colour, String make, String model, Double minprice, Double maxprice, List<Available> availables) {
+        return this.vehicleRepository.findBySearchParameters(colour,make,model, minprice, maxprice, availables);
     }
 
 
