@@ -3,17 +3,8 @@ package com.bfwg.model;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -43,6 +34,20 @@ public class User implements UserDetails, Serializable {
   @Column(name = "lastname")
   private String lastname;
 
+  @Column(name = "address")
+  private String address;
+
+  @Column(name = "city")
+  private String city;
+
+  @Column(name = "email")
+  private String email;
+
+  @Column(name = "telephone")
+  private String telephone;
+
+  @OneToMany(mappedBy = "user")
+  private List<Vehicle> vehicles;
 
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinTable(name = "user_authority",
@@ -89,6 +94,46 @@ public class User implements UserDetails, Serializable {
   public void setLastname(String lastname) {
 
     this.lastname = lastname;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getTelephone() {
+    return telephone;
+  }
+
+  public void setTelephone(String telephone) {
+    this.telephone = telephone;
+  }
+
+  public List<Vehicle> getVehicles() {
+    return vehicles;
+  }
+
+  public void setVehicles(List<Vehicle> vehicles) {
+    this.vehicles = vehicles;
   }
 
   public void setAuthorities(List<Authority> authorities) {
