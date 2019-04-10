@@ -49,8 +49,9 @@ public class VehicleServiceImpl implements VehicleService {
         return this.vehicleRepository.save(vehiclerequest);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
-    public void delete(Vehicle vehicle){
+    public void delete(Vehicle vehicle) throws AccessDeniedException {
         this.vehicleRepository.delete(vehicle);
     }
 
