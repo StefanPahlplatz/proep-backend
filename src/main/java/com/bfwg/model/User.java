@@ -49,6 +49,9 @@ public class User implements UserDetails, Serializable {
   @OneToMany(mappedBy = "user")
   private List<Vehicle> vehicles;
 
+  @OneToMany(mappedBy = "user")
+  private List<Reservation> reservations;
+
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinTable(name = "user_authority",
       joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -138,6 +141,14 @@ public class User implements UserDetails, Serializable {
 
   public void setAuthorities(List<Authority> authorities) {
     this.authorities = authorities;
+  }
+
+  public List<Reservation> getReservations() {
+    return reservations;
+  }
+
+  public void setReservations(List<Reservation> reservations) {
+    this.reservations = reservations;
   }
 
   @Override
