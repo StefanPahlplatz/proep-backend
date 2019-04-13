@@ -15,6 +15,10 @@ public class Review implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "user")
+    private User user;
+
     @Column(name = "rating")
     private Double rating;
 
@@ -22,17 +26,17 @@ public class Review implements Serializable {
     private String comment;
 
     @NotNull
-    @Column(name = "entity")
-    private String entity;
+    @Column(name = "type")
+    private String type;
 
     public Review(){
 
     }
 
-    public Review(Double rating, String comment, String entity){
+    public Review(Double rating, String comment, String type){
         this.rating = rating;
         this.comment = comment;
-        this.entity = entity;
+        this.type = type;
     }
 
     public Long getId() {
@@ -59,11 +63,19 @@ public class Review implements Serializable {
         this.comment = comment;
     }
 
-    public String getEntity() {
-        return entity;
+    public String getType() {
+        return type;
     }
 
-    public void setEntity(String entity) {
-        this.entity = entity;
+    public void setType(String entity) {
+        this.type = type;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

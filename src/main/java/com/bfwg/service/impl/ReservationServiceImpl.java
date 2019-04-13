@@ -29,13 +29,13 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> findByUser(User user) {
-        return this.reservationRepository.findByUser(user);
+    public List<Reservation> findByUser_Id(Long id) {
+        return this.reservationRepository.findByUser_Id(id);
     }
 
     @Override
-    public List<Reservation> findByVehicle(Vehicle vehicle) {
-        return this.reservationRepository.findByVehicle(vehicle);
+    public List<Reservation> findByVehicle_Id(Long id) {
+        return this.reservationRepository.findByVehicle_Id(id);
     }
 
     @Override
@@ -47,6 +47,10 @@ public class ReservationServiceImpl implements ReservationService {
     public Reservation save(Reservation reservation) {
 
         Available available = this.availableService.findByStartdateBeforeAndEnddateAfterAndVehicle(reservation.getStartdate(),reservation.getEnddate(),reservation.getVehicle());
+
+        if(available == null){
+            return null;
+        }
 
         //when the reservation start and end dates match the available entity of the vehicle
         if(available.getStartdate().equals(reservation.getStartdate()) && available.getEnddate().equals(reservation.getEnddate())){

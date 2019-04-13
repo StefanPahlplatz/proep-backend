@@ -1,6 +1,7 @@
 package com.bfwg.repository;
 
 import com.bfwg.model.Available;
+import com.bfwg.model.Reservation;
 import com.bfwg.model.User;
 import com.bfwg.model.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,7 +20,6 @@ public interface VehicleRepository extends JpaRepository<Vehicle,Long> {
     List<Vehicle>  findByType(String type);
     Vehicle findByRegistration(String registration);
     List<Vehicle> findByPriceBetween (Double pricelower, Double priceupper);
-
 
     @Query("select v from Vehicle v left join v.availables a where v.colour like %?1% and v.make like %?2% and v.model like %?3% and v.type like %?4% and v.price" +
             " between ?5 and ?6 and a.startdate <= ?7 and a.enddate > ?8")

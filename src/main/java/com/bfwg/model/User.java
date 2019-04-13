@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.persistence.*;
 
+import org.hibernate.annotations.Formula;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -46,11 +47,18 @@ public class User implements UserDetails, Serializable {
   @Column(name = "telephone")
   private String telephone;
 
+  //@Formula("(SELECT AVG(r.rating) FROM REVIEW rev INNER JOIN RESERVATION res ON rev.id = res.user_review" +
+  //       " INNER JOIN USER u ON res.user = u.username)")
+  private Double rating;
+
   @OneToMany(mappedBy = "user")
   private List<Vehicle> vehicles;
 
   @OneToMany(mappedBy = "user")
   private List<Reservation> reservations;
+
+  @OneToMany(mappedBy = "user")
+  private List<Review> reviews;
 
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinTable(name = "user_authority",
@@ -97,6 +105,24 @@ public class User implements UserDetails, Serializable {
   public void setLastname(String lastname) {
 
     this.lastname = lastname;
+  }
+
+  @Transient
+  public Double getRating() {
+
+    Double temp = 0.00;
+    int count = 0;
+
+    for (Reservation r:this.reservations) {
+      if(r.getUserreview() != null){
+        temp =+ r.getUserreview().getRating();
+        count++;
+      }
+    }
+
+    this.rating = temp/count;
+
+    return rating;
   }
 
   public String getAddress() {
@@ -149,6 +175,14 @@ public class User implements UserDetails, Serializable {
 
   public void setReservations(List<Reservation> reservations) {
     this.reservations = reservations;
+  }
+
+  public List<Review> getReviews() {
+    return reviews;
+  }
+
+  public void setReviews(List<Review> reviews) {
+    this.reviews = reviews;
   }
 
   @Override

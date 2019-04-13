@@ -27,6 +27,10 @@ public class Available implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Vehicle vehicle;
 
+    public Available(){
+
+    }
+
     public Available(Date startdate, Date enddate, Vehicle vehicle){
         this.startdate = startdate;
         this.enddate = enddate;
