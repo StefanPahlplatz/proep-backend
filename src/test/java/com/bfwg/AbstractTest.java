@@ -3,6 +3,7 @@ package com.bfwg;
 import com.bfwg.model.Authority;
 import com.bfwg.model.User;
 import com.bfwg.model.UserRoleName;
+import com.bfwg.model.Vehicle;
 import com.bfwg.repository.UserRepository;
 import com.bfwg.security.auth.AnonAuthentication;
 import com.bfwg.security.auth.TokenBasedAuthentication;
@@ -87,6 +88,5 @@ public abstract class AbstractTest {
         admin.setAuthorities(adminAuthorities);
         return admin;
     }
-
 
 }

@@ -1,10 +1,12 @@
 package com.bfwg.model;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -14,6 +16,10 @@ public class Vehicle implements Serializable {
     @Column(name = "id", insertable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "timestamp", insertable = false, updatable = false)
+    @CreationTimestamp
+    private Date timestamp;
 
     @Column(name = "registration")
     private String registration;
@@ -30,6 +36,9 @@ public class Vehicle implements Serializable {
     @Column(name = "make")
     private String make;
 
+    @Column(name = "type")
+    private String type;
+
     @Column(name = "price")
     private Double price;
 
@@ -40,13 +49,15 @@ public class Vehicle implements Serializable {
     @OneToMany(mappedBy = "vehicle")
     private List<Available> availables;
 
-
+    @OneToMany(mappedBy = "vehicle")
+    private List<Reservation> reservations;
 
     public Vehicle(){}
 
-    public Vehicle(String make, String model, int mileage, String registration, String colour, Double price, User user){
+    public Vehicle(String make, String model,String type, int mileage, String registration, String colour, Double price, User user){
         this.make = make;
         this.model = model;
+        this.type = type;
         this.registration = registration;
         this.mileage = mileage;
         this.colour = colour;
@@ -60,6 +71,14 @@ public class Vehicle implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getRegistration() {
@@ -118,11 +137,27 @@ public class Vehicle implements Serializable {
         this.user = user;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public List<Available> getAvailables() {
         return availables;
     }
 
     public void setAvailables(List<Available> availables) {
         this.availables = availables;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

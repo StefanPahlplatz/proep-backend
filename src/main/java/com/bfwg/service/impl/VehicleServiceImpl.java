@@ -22,7 +22,6 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public List<Vehicle> findByUser(User user) {
         return vehicleRepository.findByUser(user);
-
     }
 
     @Override
@@ -47,7 +46,6 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public Vehicle save(Vehicle vehiclerequest) {
-
         return this.vehicleRepository.save(vehiclerequest);
     }
 
@@ -55,6 +53,11 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public void delete(Vehicle vehicle) throws AccessDeniedException {
         this.vehicleRepository.delete(vehicle);
+    }
+
+    @Override
+    public List<Vehicle> findByType(String type) {
+        return this.vehicleRepository.findByType(type);
     }
 
     @Override
@@ -68,8 +71,8 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public List<Vehicle> findBySearchParameters(String colour, String make, String model, Double minprice, Double maxprice, List<Available> availables) {
-        return this.vehicleRepository.findBySearchParameters(colour,make,model, minprice, maxprice, availables);
+    public List<Vehicle> findBySearchParameters(String colour, String make, String model,String type, Double minprice, Double maxprice, Date startdate, Date enddate) {
+        return this.vehicleRepository.findBySearchParameters(colour,make,model,type, minprice, maxprice, startdate, enddate);
     }
 
 

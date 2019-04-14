@@ -25,4 +25,21 @@ public class AvailableServiceImpl implements AvailableService {
     public List<Available> findByStartdateBeforeAndEnddateAfter(Date start,Date end){
         return this.availableRepository.findByStartdateBeforeAndEnddateAfter(start,end);
     }
+
+    @Override
+    public Available save(Available availablerequest) {
+        return this.availableRepository.save(availablerequest);
+    }
+
+    @Override
+    public Available findByStartdateBeforeAndEnddateAfterAndVehicle(Date start, Date end, Vehicle vehicle) {
+        return this.availableRepository.findByStartdateBeforeAndEnddateAfterAndVehicle(start,end,vehicle);
+    }
+
+    @Override
+    public void delete(Available available) {
+        this.availableRepository.delete(available);
+    }
+
+
 }

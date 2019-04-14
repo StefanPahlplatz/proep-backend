@@ -21,9 +21,11 @@ public interface VehicleService {
 
     void delete(Vehicle vehicle);
 
+    List<Vehicle>  findByType(String type);
+
     Vehicle findByRegistration(String registration);
 
     List<Vehicle> findByPriceBetween (Double pricelower, Double priceupper);
 
-    List<Vehicle> findBySearchParameters(String colour,String make,String model, Double minprice, Double maxprice, List<Available> availables);
+    List<Vehicle> findBySearchParameters(String colour,String make,String model,String type, Double minprice, Double maxprice, Date startdate, Date enddate);
 }

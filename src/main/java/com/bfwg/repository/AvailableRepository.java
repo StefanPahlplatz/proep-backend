@@ -12,4 +12,6 @@ import java.util.List;
 public interface AvailableRepository extends JpaRepository<Available,Long> {
     List<Available> findByVehicle(Vehicle vehicle);
     List<Available> findByStartdateBeforeAndEnddateAfter(Date start, Date end);
+
+    Available findByStartdateBeforeAndEnddateAfterAndVehicle(Date start,Date end,Vehicle vehicle);
 }

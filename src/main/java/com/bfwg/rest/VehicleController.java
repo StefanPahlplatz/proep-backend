@@ -58,6 +58,12 @@ public class VehicleController {
         return this.vehicleService.findByUser(user);
     }
 
+    @RequestMapping (method = GET, value="/type")
+    public List<Vehicle> findByType (@RequestBody String type){
+
+        return this.vehicleService.findByType(type);
+    }
+
     @RequestMapping(method = POST, value = "/")
     public ResponseEntity<?> addVehicle(@RequestBody Vehicle vehiclerequest){
         Vehicle existVehicle = this.vehicleService.findByRegistration(vehiclerequest.getRegistration());
@@ -86,23 +92,19 @@ public class VehicleController {
     @RequestMapping("/search")
     public List<Vehicle> findBySearchParameters(@RequestParam(value = "maxprice", defaultValue = "100000000") Double maxprice,
                                                 @RequestParam(value = "minprice", defaultValue = "0") Double minprice,
-                                                @RequestParam(value = "make", defaultValue = "*") String make,
-                                                @RequestParam(value = "model", defaultValue = "*") String model,
-                                                @RequestParam(value = "colour", defaultValue = "*") String colour,
-                                                @RequestParam(value = "start", defaultValue = "2018-12-31") String start,
-                                                @RequestParam(value = "end", defaultValue = "2080-01-01") String end) throws ParseException {
+                                                @RequestParam(value = "make", defaultValue = "") String make,
+                                                @RequestParam(value = "model", defaultValue = "") String model,
+                                                @RequestParam(value = "type", defaultValue = "") String type,
+                                                @RequestParam(value = "colour", defaultValue = "") String colour,
+                                                @RequestParam(value = "start", defaultValue = "2100-12-31") String start,
+                                                @RequestParam(value = "end", defaultValue = "2019-01-01") String end) throws ParseException {
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-        List<Available> dates = this.availableService.findByStartdateBeforeAndEnddateAfter(format.parse(start),format.parse(end));
+        Date s = format.parse(start);
+        Date e = format.parse(end);
 
-        List<Vehicle> vehicles = new ArrayList<>();
-
-        if(dates.isEmpty()){
-            return vehicles;
-        }
-
-        return this.vehicleService.findBySearchParameters(colour,make,model,minprice,maxprice,dates);
+        return this.vehicleService.findBySearchParameters(colour,make,model,type,minprice,maxprice,s,e);
     }
 
 
