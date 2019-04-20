@@ -1,5 +1,6 @@
 package com.bfwg.service.impl;
 
+import com.bfwg.model.Reservation;
 import com.bfwg.model.User;
 import com.bfwg.model.Vehicle;
 import com.bfwg.service.EmailService;
@@ -15,6 +16,8 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -68,6 +71,36 @@ public class EmailServiceImpl implements EmailService {
         helper.setTo(user.getEmail());
         helper.setText(htmlOwner, true);
         helper.setSubject("AirRnD - Registration");
+        javaMailSender.send(message);
+
+    }
+
+    @Override
+    public void makeReservation(Reservation reservation) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+        Map model = new HashMap();
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY");
+        model.put("reservationid", reservation.getId());
+        model.put("firstname", reservation.getUser().getFirstname());
+        model.put("startdate", dateFormat.format(reservation.getStartdate()));
+        model.put("enddate", dateFormat.format(reservation.getEnddate()));
+        model.put("carhost", reservation.getVehicle().getUser().getFirstname());
+        model.put("phone", reservation.getVehicle().getUser().getTelephone());
+        model.put("pricetotal", reservation.getVehicle().getPrice());
+        model.put("address", reservation.getVehicle().getUser().getAddress());
+        model.put("carregistration", reservation.getVehicle().getRegistration());
+        model.put("carmake", reservation.getVehicle().getMake());
+        model.put("cartype", reservation.getVehicle().getType());
+        model.put("colour", reservation.getVehicle().getColour());
+        model.put("model", reservation.getVehicle().getModel());
+        final Context context = new Context();
+        context.setVariables(model);
+
+        String htmlReservation = templateEngine.process("templateReservation", context);
+        helper.setTo(reservation.getUser().getEmail());
+        helper.setText(htmlReservation, true);
+        helper.setSubject("AirRnD - Reservation");
         javaMailSender.send(message);
 
     }
