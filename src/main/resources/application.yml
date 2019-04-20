@@ -11,3 +11,19 @@ logging:
   level:
     org.springframework.web: ERROR
     com.bfwg: DEBUG
+
+spring:
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    username: goairrnd@gmail.com
+    password: HELLO_thisisairrnd1
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+    test-connection: false
