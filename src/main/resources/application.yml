@@ -13,11 +13,13 @@ logging:
     com.bfwg: DEBUG
 
 spring:
+  profiles:
+    active: #anotherymlprofile
   mail:
     default-encoding: UTF-8
     host: smtp.gmail.com
-    username: goairrnd@gmail.com
-    password: HELLO_thisisairrnd1
+    username: xxx
+    password: xxx
     port: 587
     properties:
       mail:
