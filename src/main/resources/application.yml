@@ -11,3 +11,21 @@ logging:
   level:
     org.springframework.web: ERROR
     com.bfwg: DEBUG
+
+spring:
+  profiles:
+    active: #anotherymlprofile
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    username: xxx
+    password: xxx
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+    test-connection: false

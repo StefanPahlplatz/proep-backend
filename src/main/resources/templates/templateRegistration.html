@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <title>AirRnD User Registration</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css' />
+    <!-- use the font -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body style="margin: 0; padding: 0;">
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="1000" style="border-collapse: collapse;">
+    <tr>
+        <td bgcolor="#FFAF9C" style="padding: 40px 30px 40px 30px;">
+            <h3>Dear <label th:text="${firstname}">firstname</label> ,</h3>
+            <h3>Thank you for joining AirRnD for your best travel experiences!</h3>
+            <h4>Enjoy many benefits while travelling with AirRnD in just one click</h4>
+        </td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" style="padding: 30px 30px 30px 30px;">
+            <p>For further information or complaint please contact: </p>
+            <p>Customer service support - GoAirRnD@gmail.com</p>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

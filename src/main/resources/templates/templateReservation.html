@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <title>AirRnD User Registration</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css' />
+    <!-- use the font -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body style="margin: 0; padding: 0;">
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="1000" style="border-collapse: collapse;">
+    <tr>
+        <td bgcolor="#FFAF9C" style="padding: 40px 30px 40px 30px;">
+            <h1>Dear <label th:text="${firstname}">firstname</label> ,</h1>
+            <h3>Thank you for making reservation with AirRnD</h3>
+            <h4>Below is your reservation information:</h4>
+        </td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" style="padding: 30px 30px 30px 30px;">
+            <h3>Car:</h3>
+            <h4>
+            <ul>
+                <li>Registration: <label th:text="${carregistration}">Registration</label></li>
+                <li>Car Make: <label th:text="${carmake}">make</label></li>
+                <li>Car Type: <label th:text="${cartype}">type</label></li>
+                <li>Car Colour: <label th:text="${colour}">color</label></li>
+                <li>Car Model: <label th:text="${model}">model</label></li>
+            </ul>
+            <h4>Reservation:</h4>
+            <ul>
+                <li>Reservation number: <label th:text="${reservationid}">id</label></li>
+                <li>Start date: <label th:text="${startdate}">startdate</label></li>
+                <li>End date: <label th:text="${enddate}">enddate</label></li>
+                <li>Owner name: <label th:text="${carhost}">carhost</label></li>
+                <li>Owner phone: <label th:text="${phone}">phone</label></li>
+                <li>Price: <label th:text="${pricetotal}">price</label></li>
+                <li>Address to pickup: <label th:text="${address}">address</label></li>
+            </ul>
+            </h4>
+        </td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFAF9C" style="padding: 40px 30px 40px 30px;">
+            <h3>Car pick up instructions</h3>
+            <p>Since you make this reservation your car will be only available to you and this reservation <b>can not be cancelled</b>.
+            During the day you rent the car, your car will be located exactly on the stated address mentioned in this email.
+            Here is the procedures:
+            </p>
+            <ul>
+                <li>Before the day you rent the car, your car host will make sure the car is in healthy condition and you have a pleasant trip</li>
+                <li>Make sure to pick up the car on time on both of you had agreed (also for return). Keep it casual and have a little chat with the owner</li>
+                <li>Together with the owner, you will check the car and its surrounds to make sure that any damaged you found during checking that not caused by you.</li>
+                <li>You might also want to ask other things such as car manuals, what fuel does the car consumes and etc before you go</li>
+                <li>Car host will hand in you the key after everything is clear and you are welcome to start your trip.</li>
+                <li>When something is wrong at this point, or when something is unclear or you are not able to work things out, you can contact our Community Support.
+                They are very welcome</li>
+            </ul>
+            <h3>Car return instructions</h3>
+            <p>After you have done with your trip then you need to deliver back the car again to the place where exactly you pick up the car. There are some
+            procedures need to be followed</p>
+            <ul>
+                <li>Make sure to return the car on time on both you had agreed. Inform an owner if you have not returned in time, it's always good to keep communication</li>
+                <li>Lateness will be counted as an extra day fare, so please be aware of your time</li>
+                <li>After you have reached your drop out point, owner will ask you the key and do some inspection within the car</li>
+                <li>In case there is any damage on the car that you made, owner will count on how much damage it will costs to be a penalty you need to be paid</li>
+                <li>Once everything is clear and your rental will be ended automatically</li>
+                <li>That was it! Your first rental has finished! You can now leave a review of the car and owner if you wish</li>
+                <li>When something is unclear or if you have any questions, you are always welcome to contact our custome support service</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFAF9C" style="padding: 40px 30px 40px 30px;">
+            Customer Service Support - GoAirRnD@gmail.com
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
