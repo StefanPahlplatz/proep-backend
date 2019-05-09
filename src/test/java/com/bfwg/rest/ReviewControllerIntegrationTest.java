@@ -57,8 +57,6 @@ public class ReviewControllerIntegrationTest extends AbstractTest {
 
         given(reviewService.save(any(Review.class))).willReturn(review);
 
-        //given(reservationService.update(any(Reservation.class))).willReturn(reservation);
-
         mvc.perform(post("/api/review/")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
