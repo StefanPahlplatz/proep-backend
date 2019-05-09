@@ -3,6 +3,7 @@ package com.bfwg.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -40,18 +41,13 @@ public class Reservation implements Serializable {
     @JoinColumn(name = "vehicle")
     private Vehicle vehicle;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name ="user_review")
-    private Review userreview;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name ="vehicle_review")
-    private Review vehiclereview;
+    @OneToMany(mappedBy = "reservation")
+    private List<Review> reviews;
 
     public Reservation(){}
 
     public Reservation(Date startdate, Date enddate, Double price, boolean paid, boolean cancelled, boolean returned,
-                       User user, Vehicle vehicle, Review userreview, Review vehiclereview){
+                       User user, Vehicle vehicle){
         this.startdate = startdate;
         this.enddate = enddate;
         this.price = price;
@@ -60,8 +56,6 @@ public class Reservation implements Serializable {
         this.returned = returned;
         this.user = user;
         this.vehicle = vehicle;
-        this.userreview = userreview;
-        this.vehiclereview = vehiclereview;
     }
 
     public Long getId() {
@@ -136,19 +130,11 @@ public class Reservation implements Serializable {
         this.vehicle = vehicle;
     }
 
-    public Review getUserreview() {
-        return userreview;
+    public List<Review> getReviews() {
+        return reviews;
     }
 
-    public void setUserreview(Review userreview) {
-        this.userreview = userreview;
-    }
-
-    public Review getVehiclereview() {
-        return vehiclereview;
-    }
-
-    public void setVehiclereview(Review vehiclereview) {
-        this.vehiclereview = vehiclereview;
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 }

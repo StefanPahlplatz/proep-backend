@@ -2,7 +2,6 @@ package com.bfwg.rest;
 
 
 import com.bfwg.exception.ResourceConflictException;
-import com.bfwg.model.Available;
 import com.bfwg.model.User;
 import com.bfwg.model.Vehicle;
 import com.bfwg.service.AvailableService;
@@ -11,11 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -105,6 +101,14 @@ public class VehicleController {
         Date e = format.parse(end);
 
         return this.vehicleService.findBySearchParameters(colour,make,model,type,minprice,maxprice,s,e);
+    }
+
+    @RequestMapping("/city/{city}")
+    public List<Vehicle> findByCity(@PathVariable(value = "city") String city){
+
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        return vehicles;
     }
 
 
