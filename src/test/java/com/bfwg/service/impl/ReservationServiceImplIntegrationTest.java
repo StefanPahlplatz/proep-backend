@@ -63,7 +63,7 @@ public class ReservationServiceImplIntegrationTest {
         Date end_date = format.parse("2019-04-12");
 
         reservation = new Reservation(start_date, end_date, 200.00, true, false, false,
-                user1, vehicle, null, null);
+                user1, vehicle);
     }
 
     @Test

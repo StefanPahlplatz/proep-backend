@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 
 @Entity
-@Table(name = "USER")
+@Table(name = "user")
 public class User implements UserDetails, Serializable {
   @Id
   @Column(name = "id")
@@ -47,8 +47,7 @@ public class User implements UserDetails, Serializable {
   @Column(name = "telephone")
   private String telephone;
 
-  //@Formula("(SELECT AVG(r.rating) FROM REVIEW rev INNER JOIN RESERVATION res ON rev.id = res.user_review" +
-  //       " INNER JOIN USER u ON res.user = u.username)")
+  @Transient
   private Double rating;
 
   @OneToMany(mappedBy = "user")
@@ -107,16 +106,17 @@ public class User implements UserDetails, Serializable {
     this.lastname = lastname;
   }
 
-  @Transient
   public Double getRating() {
 
     Double temp = 0.00;
     int count = 0;
 
     for (Reservation r:this.reservations) {
-      if(r.getUserreview() != null){
-        temp =+ r.getUserreview().getRating();
-        count++;
+      for (Review review : r.getReviews()){
+        if(review.getType().equals("user")){
+          temp =+ review.getRating();
+          count++;
+        }
       }
     }
 

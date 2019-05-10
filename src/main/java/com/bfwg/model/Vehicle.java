@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "VEHICLE")
+@Table(name = "vehicle")
 public class Vehicle implements Serializable {
     @Id
     @Column(name = "id", insertable = false, updatable = false)

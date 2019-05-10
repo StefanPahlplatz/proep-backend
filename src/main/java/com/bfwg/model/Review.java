@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "REVIEW")
+@Table(name = "review")
 public class Review implements Serializable {
 
     @Id
@@ -14,6 +14,10 @@ public class Review implements Serializable {
     @Column(name = "id", insertable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "reservation")
+    private Reservation reservation;
 
     @ManyToOne
     @JoinColumn(name = "user")
@@ -67,7 +71,7 @@ public class Review implements Serializable {
         return type;
     }
 
-    public void setType(String entity) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -77,5 +81,13 @@ public class Review implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 }

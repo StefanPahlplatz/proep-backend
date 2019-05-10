@@ -56,10 +56,10 @@ public class ReservationRepositoryIntegrationTest {
         vehicle1 = new Vehicle("BMW", "X5","Luxury", 20000, "BD51SMR","red", 300.00,user1);
 
         reservation1 = new Reservation(format.parse("2019-05-09"),format.parse("2019-05-15"), 220.00, true, false, false,
-                user1, vehicle1, null, null);
+                user1, vehicle1);
 
         reservation2 = new Reservation(format.parse("2019-06-09"),format.parse("2019-06-19"), 220.00, true, false, false,
-                user2, vehicle1, null, null);
+                user2, vehicle1);
 
         entityManager.persist(user1);
         entityManager.persist(user2);

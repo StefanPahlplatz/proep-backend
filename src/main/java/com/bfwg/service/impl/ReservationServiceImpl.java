@@ -94,6 +94,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation update(Reservation reservation) {
+
+        Reservation temp = findById(reservation.getId());
+
         return this.reservationRepository.save(reservation);
     }
 }
