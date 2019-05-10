@@ -74,6 +74,7 @@ public class ReservationController {
         if(existReservation != null){
             throw new ResourceConflictException(reservationrequest.getId(), "A reservation with this id already exists!");
         }
+
         Reservation reservation = this.reservationService.save(reservationrequest);
 
         if(reservation != null){
