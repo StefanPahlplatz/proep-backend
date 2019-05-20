@@ -16,4 +16,12 @@ public class ReviewServiceImpl implements ReviewService {
     public Review save(Review reviewrequest) {
         return this.reviewRepository.save(reviewrequest);
     }
+
+    public Review get(long id){
+        return this.reviewRepository.getOne(id);
+    }
+
+    public Review find(long id){
+        return this.reviewRepository.findOne(id);
+    }
 }
