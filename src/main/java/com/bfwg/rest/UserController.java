@@ -2,6 +2,8 @@ package com.bfwg.rest;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +55,6 @@ public class UserController {
     return ResponseEntity.accepted().body(result);
   }
 
-
   @RequestMapping(method = POST, value = "/signup")
   public ResponseEntity<?> addUser(@RequestBody UserRequest userRequest,
       UriComponentsBuilder ucBuilder) {
@@ -66,6 +67,24 @@ public class UserController {
     HttpHeaders headers = new HttpHeaders();
     headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
     return new ResponseEntity<User>(user, HttpStatus.CREATED);
+  }
+
+  @RequestMapping(method = PUT, value = "/user/{userId}")
+  public ResponseEntity<?> updateUser(@PathVariable Long userId,@RequestBody User userRequest){
+
+    User user = this.userService.findById(userRequest.getId());
+
+    if(user == null){
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    if(userId != userRequest.getId()){
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    this.userService.save(userRequest);
+
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
   /*
