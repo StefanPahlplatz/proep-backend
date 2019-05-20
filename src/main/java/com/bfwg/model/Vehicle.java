@@ -42,6 +42,12 @@ public class Vehicle implements Serializable {
     @Column(name = "price")
     private Double price;
 
+    @Column(name = "longitude")
+    private Double longitude;
+
+    @Column(name = "latitude")
+    private Double latitude;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -139,6 +145,22 @@ public class Vehicle implements Serializable {
 
     public String getType() {
         return type;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 
     public void setType(String type) {

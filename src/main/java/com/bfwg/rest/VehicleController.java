@@ -92,15 +92,30 @@ public class VehicleController {
                                                 @RequestParam(value = "model", defaultValue = "") String model,
                                                 @RequestParam(value = "type", defaultValue = "") String type,
                                                 @RequestParam(value = "colour", defaultValue = "") String colour,
+                                                @RequestParam(value = "longitude", defaultValue = "0.0") Double longitude,
+                                                @RequestParam(value = "latitude", defaultValue = "0.0") Double latitude,
+                                                @RequestParam(value = "distance", defaultValue = "0.0") Double distance,
                                                 @RequestParam(value = "start", defaultValue = "2100-12-31") String start,
                                                 @RequestParam(value = "end", defaultValue = "2019-01-01") String end) throws ParseException {
+
+        List<Vehicle> vehicles;
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
         Date s = format.parse(start);
         Date e = format.parse(end);
 
-        return this.vehicleService.findBySearchParameters(colour,make,model,type,minprice,maxprice,s,e);
+        if(longitude != 0.0 && latitude != 0.0 && distance != 0.0){
+            vehicles = this.vehicleService.findByLocation(longitude,latitude,distance);
+        }
+        else{
+            return this.vehicleService.findBySearchParameters(colour,make,model,type,minprice,maxprice,s,e);
+        }
+
+        if(vehicles.size() == 0)
+            return new ArrayList<>();
+
+        return this.vehicleService.findBySearchParameters(colour,make,model,type,minprice,maxprice,s,e,vehicles);
     }
 
     @RequestMapping("/city/{city}")
