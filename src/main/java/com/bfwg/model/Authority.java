@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by fan.jin on 2016-11-03.
@@ -22,12 +23,14 @@ public class Authority implements GrantedAuthority {
     @Column(name="name")
     UserRoleName name;
 
+    @ManyToMany(mappedBy = "authorities")
+    List<User> users;
+
     public Authority(){
 
     }
 
-    public Authority(Long id, UserRoleName name){
-        this.id = id;
+    public Authority(UserRoleName name){
         this.name = name;
     }
 
@@ -54,4 +57,11 @@ public class Authority implements GrantedAuthority {
         this.id = id;
     }
 
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
 }
