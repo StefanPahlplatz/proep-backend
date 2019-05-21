@@ -22,6 +22,15 @@ public class Authority implements GrantedAuthority {
     @Column(name="name")
     UserRoleName name;
 
+    public Authority(){
+
+    }
+
+    public Authority(Long id, UserRoleName name){
+        this.id = id;
+        this.name = name;
+    }
+
     @Override
     public String getAuthority() {
         return name.name();
