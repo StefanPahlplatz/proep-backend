@@ -22,7 +22,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping( value="/api/available", produces = MediaType.APPLICATION_JSON_VALUE)
-public class AvailableController {
+public class  AvailableController {
 
     @Autowired
     AvailableService availableService;

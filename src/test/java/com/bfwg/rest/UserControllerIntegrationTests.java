@@ -2,12 +2,16 @@ package com.bfwg.rest;
 
 import com.bfwg.AbstractTest;
 import com.bfwg.model.User;
+import com.bfwg.model.UserRequest;
 import com.bfwg.security.auth.IAuthenticationFacade;
 import com.bfwg.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -70,6 +74,17 @@ public class UserControllerIntegrationTests extends AbstractTest {
     }
 
     @Test
+    public void findAll_ReturnsNull_WhenNoUsersExist() throws Exception {
+
+        //Arrange
+        given(userService.findAll()).willReturn(null);
+
+        mvc.perform(get("api/user/all")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void findById_ReturnsFoundUser()
         throws Exception{
 
@@ -86,7 +101,7 @@ public class UserControllerIntegrationTests extends AbstractTest {
         mvc.perform(get("/api/user/" + foundUser.getId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)));
+                .andExpect(jsonPath("id", is(foundUser.getId().intValue())));
     }
 
     @Test
@@ -97,10 +112,11 @@ public class UserControllerIntegrationTests extends AbstractTest {
         User user = new User();
         user.setId((long)1);
 
-        given(userService.findById(user.getId())).willReturn(null);
+        given(userService.findById(any(Long.class))).willReturn(null);
 
         // Assert
-        mvc.perform(get("/api/user/"+user.getId())
+
+         mvc.perform(get("/api/user/"+user.getId().toString())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
@@ -109,19 +125,57 @@ public class UserControllerIntegrationTests extends AbstractTest {
     public void saveUser_ReturnsJson()
         throws Exception{
 
-        // Arrange
+        //Arrange
         User user = new User();
-        user.setId((long)1);
+        UserRequest request = new UserRequest();
+        ObjectMapper mapper = new ObjectMapper();
 
-        given(userService.findById(user.getId())).willReturn(null);
-        given(userService.save(any())).willReturn(user);
+        user.setId(new Long(1));
+        user.setUsername("username");
+        user.setPassword("password");
+        user.setFirstname("John");
+        user.setLastname("Doe");
+
+        request.setFirstname(user.getFirstname());
+        request.setLastname(user.getLastname());
+        request.setUsername(user.getUsername());
+        request.setPassword(user.getPassword());
+
+        given(userService.findByUsername(user.getUsername())).willReturn(null);
+        given(userService.save(any(UserRequest.class))).willReturn(user);
 
         // Assert
-        mvc.perform(post("/api/signup/")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("id", is(user.getId())));
+         mvc.perform(post("/api/signup")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapper.writeValueAsBytes(request)))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void SaveUser_ReturnsError_WhenUserAlreadyExists() throws Exception {
+
+        //Arrange
+        User user = new User();
+        UserRequest request = new UserRequest();
+        ObjectMapper mapper = new ObjectMapper();
+
+        user.setId(new Long(1));
+        user.setUsername("username");
+        user.setPassword("password");
+        user.setFirstname("John");
+        user.setLastname("Doe");
+
+        request.setFirstname(user.getFirstname());
+        request.setLastname(user.getLastname());
+        request.setUsername(user.getUsername());
+        request.setPassword(user.getPassword());
+
+        given(userService.findByUsername(user.getUsername())).willReturn(user);
+
+        // Assert
+        mvc.perform(post("/api/signup")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsBytes(request)))
+                .andExpect(status().isConflict());
     }
 }

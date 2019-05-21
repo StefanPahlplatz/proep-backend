@@ -90,4 +90,16 @@ public class Review implements Serializable {
     public void setReservation(Reservation reservation) {
         this.reservation = reservation;
     }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "id=" + id +
+                ", reservation=" + reservation +
+                ", user=" + user +
+                ", rating=" + rating +
+                ", comment='" + comment + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

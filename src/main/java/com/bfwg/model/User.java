@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Formula;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -59,6 +60,11 @@ public class User implements UserDetails, Serializable {
   @OneToMany(mappedBy = "user")
   private List<Review> reviews;
 
+
+  public User(){
+    this.rating = -1.0;
+  }
+
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinTable(name = "user_authority",
       joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -105,8 +111,12 @@ public class User implements UserDetails, Serializable {
 
     this.lastname = lastname;
   }
-
+ @Transient
   public Double getRating() {
+
+    if(this.reservations == null || this.reservations.size() == 0){
+      return 0.0;
+    }
 
     Double temp = 0.00;
     int count = 0;

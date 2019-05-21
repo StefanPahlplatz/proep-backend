@@ -35,9 +35,15 @@ public class UserController {
 
 
   @RequestMapping(method = GET, value = "/user/{userId}")
-  public User loadById(@PathVariable Long userId) {
+  public ResponseEntity<User> loadById(@PathVariable Long userId) {
 
-    return this.userService.findById(userId);
+    User foundUser = this.userService.findById(userId);
+    if (foundUser == null){
+      return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+    else{
+      return new ResponseEntity<>(foundUser, HttpStatus.OK);
+    }
   }
 
   @RequestMapping(method = GET, value = "/user/all")
@@ -55,7 +61,7 @@ public class UserController {
 
 
   @RequestMapping(method = POST, value = "/signup")
-  public ResponseEntity<?> addUser(@RequestBody UserRequest userRequest,
+  public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest,
       UriComponentsBuilder ucBuilder) {
 
     User existUser = this.userService.findByUsername(userRequest.getUsername());
@@ -65,7 +71,7 @@ public class UserController {
     User user = this.userService.save(userRequest);
     HttpHeaders headers = new HttpHeaders();
     headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
-    return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    return new ResponseEntity<>(user, HttpStatus.CREATED);
   }
 
   /*

@@ -37,6 +37,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -186,5 +187,16 @@ public class AvailableControllerIntegrationTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("vehicle.id",
                         is((vehicle.getId().intValue()))));
+    }
+
+    @Test
+    public void DeleteAvailable_Successful()
+            throws Exception {
+
+        //Assert
+        mvc.perform(delete("/api/available/delete")
+        .accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
     }
 }

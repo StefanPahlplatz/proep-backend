@@ -21,7 +21,7 @@ public class ReviewController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/")
-    public Review getReview(long id){
+    public Review getReview(Long id){
         return reviewService.get(id);
     }
 
