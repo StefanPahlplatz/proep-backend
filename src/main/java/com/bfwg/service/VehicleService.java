@@ -28,4 +28,8 @@ public interface VehicleService {
     List<Vehicle> findByPriceBetween (Double pricelower, Double priceupper);
 
     List<Vehicle> findBySearchParameters(String colour,String make,String model,String type, Double minprice, Double maxprice, Date startdate, Date enddate);
+
+    List<Vehicle> findBySearchParameters(String colour,String make,String model,String type, Double minprice, Double maxprice, Date startdate, Date enddate, List<Vehicle> vehicles);
+
+    List<Vehicle> findByLocation(Double lon, Double lat, Double distance);
 }

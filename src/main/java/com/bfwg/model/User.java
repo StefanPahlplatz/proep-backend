@@ -2,9 +2,11 @@ package com.bfwg.model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +23,10 @@ public class User implements UserDetails, Serializable {
   @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  @Column(name = "timestamp", insertable = false, updatable = false)
+  @CreationTimestamp
+  private Date timestamp;
 
   @Column(name = "username")
   private String username;
@@ -59,7 +65,7 @@ public class User implements UserDetails, Serializable {
   @OneToMany(mappedBy = "user")
   private List<Review> reviews;
 
-  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
   @JoinTable(name = "user_authority",
       joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
       inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
@@ -75,6 +81,10 @@ public class User implements UserDetails, Serializable {
 
   public String getUsername() {
     return username;
+  }
+
+  public Date getTimestamp() {
+    return timestamp;
   }
 
   public void setUsername(String username) {
