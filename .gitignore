@@ -31,3 +31,6 @@ nbdist/
 ### frontend ###
 npm-debug.*
 src/main/resources/static/
+
+### twitter ###
+src/main/resources/twitter4j.properties

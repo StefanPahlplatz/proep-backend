@@ -1,19 +1,13 @@
 package com.bfwg.service.impl;
 
 import com.bfwg.service.TwitterService;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
-
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.Map.Entry.comparingByValue;
-import static java.util.stream.Collectors.toMap;
 
 @Service
 public class TwitterServiceImpl implements TwitterService {
@@ -27,19 +21,13 @@ public class TwitterServiceImpl implements TwitterService {
     @Override
     public List<String> searchTweet(String city) throws TwitterException {
         ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(true)
-                .setOAuthConsumerKey("Ksn7RnKmsxDjaiXBsfBey9CWP")
-                .setOAuthConsumerSecret("qsuedhFacXM6Lxj8YBIDUpjGkCTmNOzFCHTThuxUTOObhCjibI")
-                .setOAuthAccessToken("219254282-g7xTicuPsXCPr5yCZscfRKakzQdGsEiYJgpNjUdf")
-                .setOAuthAccessTokenSecret("YfKDLixsIPmaonyDFUd1zZxrBYSA1yIu6Z201GkZQcEvu");
-
         TwitterFactory tf = new TwitterFactory(cb.build());
         Twitter twitter = tf.getInstance();
         Query query = new Query(city + " AND (holiday OR travelling)" + " exclude:retweets");
 
 
         ArrayList<Status> tweets = new ArrayList<Status>();
-        //
+
         SimpleDateFormat sdf = new SimpleDateFormat("y-M-d");
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.HOUR_OF_DAY, -12);
