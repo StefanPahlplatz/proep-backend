@@ -1,6 +1,5 @@
 package com.bfwg.rest;
 
-import com.bfwg.exception.ResourceConflictException;
 import com.bfwg.model.Image;
 import com.bfwg.model.User;
 import com.bfwg.model.Vehicle;
@@ -8,17 +7,13 @@ import com.bfwg.service.ImageService;
 import com.bfwg.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.FileSystemUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;

@@ -29,3 +29,6 @@ nbdist/
 ### frontend ###
 npm-debug.*
 
+### api keys ###
+src\main\java\com\bfwg\config\ApiKeyConfig.java
+

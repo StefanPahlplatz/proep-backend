@@ -5,6 +5,7 @@ import com.bfwg.exception.ResourceConflictException;
 import com.bfwg.model.User;
 import com.bfwg.model.Vehicle;
 import com.bfwg.service.AvailableService;
+import com.bfwg.service.GeocodingService;
 import com.bfwg.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +33,9 @@ public class VehicleController {
 
     @Autowired
     AvailableService availableService;
+
+    @Autowired
+    GeocodingService geocodingService;
 
     @RequestMapping( method = GET, value="/")
     public List<Vehicle> getAllVehicles(){
@@ -118,12 +123,20 @@ public class VehicleController {
         return this.vehicleService.findBySearchParameters(colour,make,model,type,minprice,maxprice,s,e,vehicles);
     }
 
+    //region must be either US ("us1") or Europe ("eu1")
     @RequestMapping("/city/{city}")
     public List<Vehicle> findByCity(@PathVariable(value = "city") String city){
 
-        List<Vehicle> vehicles = new ArrayList<>();
+        Point point;
 
-        return vehicles;
+        try{
+            point = this.geocodingService.findPointByCity(city);
+        }
+        catch(Exception e){
+            return new ArrayList<>();
+        }
+
+        return vehicleService.findByLocation(point.getY(),point.getX(),15.0);
     }
 
 
