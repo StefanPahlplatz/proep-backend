@@ -18,7 +18,7 @@ public class GeocodingController {
     @Autowired
     GeocodingService geocodingService;
 
-    @RequestMapping( method = GET, value="/longitude/{lon}/latidtude/{lat}")
+    @RequestMapping( method = GET, value="/longitude/{lon}/latitude/{lat}")
     public ResponseEntity findAddressByPosition(@PathVariable(value = "lon")Double lon,
                                                 @PathVariable(value = "lat")Double lat){
 
