@@ -64,6 +64,9 @@ public class Vehicle implements Serializable {
     @OneToMany(mappedBy = "vehicle")
     private List<Reservation> reservations;
 
+    @OneToMany(mappedBy = "vehicle")
+    private List<Image> images;
+
     public Vehicle(){}
 
     public Vehicle(String make, String model,String type, int mileage, String registration, String colour, Double price, User user){
@@ -173,6 +176,9 @@ public class Vehicle implements Serializable {
 
         Date now = new Date();
 
+        if(reservations == null)
+            return false;
+
         for (Reservation r: reservations) {
             if(r.getStartdate().before(now) && r.getEnddate().after(now)){
                 return true;
@@ -189,6 +195,9 @@ public class Vehicle implements Serializable {
     public int getTimesRented() {
 
         int counter = 0;
+
+        if(reservations == null)
+            return 0;
 
         for (Reservation r: reservations) {
             if(r.getStartdate().before(new Date())){
@@ -221,5 +230,13 @@ public class Vehicle implements Serializable {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

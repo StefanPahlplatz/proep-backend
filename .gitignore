@@ -1,8 +1,6 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
 
-
-
 ### STS ###
 .classpath
 .factorypath
@@ -30,7 +28,7 @@ nbdist/
 
 ### frontend ###
 npm-debug.*
-src/main/resources/static/
 
-### twitter ###
-src/main/resources/twitter4j.properties
+### api keys ###
+src\main\java\com\bfwg\config\ApiKeyConfig.java
+
