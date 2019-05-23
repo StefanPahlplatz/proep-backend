@@ -87,7 +87,7 @@ public class ImageController {
             return new ResponseEntity<>(image, HttpStatus.CREATED);
         }
         catch (IOException e){
-            return new ResponseEntity<>(e.getStackTrace(),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
     }
