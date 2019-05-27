@@ -150,8 +150,8 @@ public class VehicleController {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if(vehicle.getUser().getId().equals(user.getId())){
-            return ResponseEntity.badRequest().body("the user is not authorised for this action");
+        if(!vehicle.getUser().getId().equals(user.getId())){
+            return new ResponseEntity<>("the user is not authorised for this action", HttpStatus.UNAUTHORIZED);
         }
 
         this.vehicleService.delete(vehicle);
