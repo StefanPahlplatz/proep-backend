@@ -40,6 +40,9 @@ public class VehicleRepositoryIntegrationTest {
     Vehicle vehicle2;
     Vehicle vehicle3;
 
+    //vehicle list
+    List<Vehicle> vehicles = new ArrayList<>();
+
     //available objects
     Available available1;
     Available available2;
@@ -63,6 +66,13 @@ public class VehicleRepositoryIntegrationTest {
         vehicle1 = new Vehicle("BMW", "X5","Luxury", 20000, "BD51SMR","red", 300.00,user1);
         vehicle2 = new Vehicle("Mercedes", "Sl","Luxury", 10000, "BD51SMS","blue", 100.00,user2);
         vehicle3 = new Vehicle("Lexus", "t3","Luxury", 40000, "BD51SMX","green", 500.00,user2);
+
+        vehicle1.setLatitude(42.29);
+        vehicle1.setLongitude(-71.1);
+
+        vehicles.add(vehicle1);
+        vehicles.add(vehicle2);
+        vehicles.add(vehicle3);
 
         available1 = new Available(format.parse("2019-04-09"),format.parse("2019-04-28"),vehicle1);
         available2 = new Available(format.parse("2019-04-19"),format.parse("2019-05-14"),vehicle2);
@@ -143,9 +153,30 @@ public class VehicleRepositoryIntegrationTest {
         Date e = format.parse("2018-04-20");
 
         // when
-        List<Vehicle> found = vehicleRepository.findBySearchParameters("","","","Luxury",0.00,100000.00,s,e);
+        List<Vehicle> found = vehicleRepository.findBySearchParameters("","","","Luxury",0.00,100000.00,s,e,vehicles);
 
         // then
         assertThat(found.size()).isEqualTo(3);
     }
+
+    @Test
+    public void whenFindByLocationThenFindVehicleInRange(){
+
+        // when
+        List<Vehicle> found = vehicleRepository.findByLocation(-71.1,42.29,15.0);
+
+        // then
+        assertThat(found.get(0)).isEqualTo(vehicle1);
+    }
+
+    @Test
+    public void whenFindByLocationOutOfRangeThenReturnEmptyList(){
+
+        // when
+        List<Vehicle> found = vehicleRepository.findByLocation(-70.1,40.29,15.0);
+
+        // then
+        assertThat(found).isEmpty();
+    }
+
 }

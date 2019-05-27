@@ -75,5 +75,15 @@ public class VehicleServiceImpl implements VehicleService {
         return this.vehicleRepository.findBySearchParameters(colour,make,model,type, minprice, maxprice, startdate, enddate);
     }
 
+    @Override
+    public List<Vehicle> findBySearchParameters(String colour, String make, String model,String type, Double minprice, Double maxprice, Date startdate, Date enddate, List<Vehicle> vehicles) {
+        return this.vehicleRepository.findBySearchParameters(colour,make,model,type, minprice, maxprice, startdate, enddate, vehicles);
+    }
+
+    @Override
+    public List<Vehicle> findByLocation(Double lon, Double lat, Double distance) {
+        return this.vehicleRepository.findByLocation(lon,lat,distance);
+    }
+
 
 }

@@ -5,6 +5,7 @@ import com.bfwg.exception.ResourceConflictException;
 import com.bfwg.model.User;
 import com.bfwg.model.Vehicle;
 import com.bfwg.service.AvailableService;
+import com.bfwg.service.GeocodingService;
 import com.bfwg.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +33,9 @@ public class VehicleController {
 
     @Autowired
     AvailableService availableService;
+
+    @Autowired
+    GeocodingService geocodingService;
 
     @RequestMapping( method = GET, value="/")
     public List<Vehicle> getAllVehicles(){
@@ -92,23 +97,46 @@ public class VehicleController {
                                                 @RequestParam(value = "model", defaultValue = "") String model,
                                                 @RequestParam(value = "type", defaultValue = "") String type,
                                                 @RequestParam(value = "colour", defaultValue = "") String colour,
+                                                @RequestParam(value = "longitude", defaultValue = "0.0") Double longitude,
+                                                @RequestParam(value = "latitude", defaultValue = "0.0") Double latitude,
+                                                @RequestParam(value = "distance", defaultValue = "0.0") Double distance,
                                                 @RequestParam(value = "start", defaultValue = "2100-12-31") String start,
                                                 @RequestParam(value = "end", defaultValue = "2019-01-01") String end) throws ParseException {
+
+        List<Vehicle> vehicles;
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
         Date s = format.parse(start);
         Date e = format.parse(end);
 
-        return this.vehicleService.findBySearchParameters(colour,make,model,type,minprice,maxprice,s,e);
+        if(longitude != 0.0 && latitude != 0.0 && distance != 0.0){
+            vehicles = this.vehicleService.findByLocation(longitude,latitude,distance);
+        }
+        else{
+            return this.vehicleService.findBySearchParameters(colour,make,model,type,minprice,maxprice,s,e);
+        }
+
+        if(vehicles.size() == 0)
+            return new ArrayList<>();
+
+        return this.vehicleService.findBySearchParameters(colour,make,model,type,minprice,maxprice,s,e,vehicles);
     }
 
+    //region must be either US ("us1") or Europe ("eu1")
     @RequestMapping("/city/{city}")
     public List<Vehicle> findByCity(@PathVariable(value = "city") String city){
 
-        List<Vehicle> vehicles = new ArrayList<>();
+        Point point;
 
-        return vehicles;
+        try{
+            point = this.geocodingService.findPointByCity(city);
+        }
+        catch(Exception e){
+            return new ArrayList<>();
+        }
+
+        return vehicleService.findByLocation(point.getY(),point.getX(),15.0);
     }
 
 

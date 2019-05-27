@@ -42,6 +42,18 @@ public class Vehicle implements Serializable {
     @Column(name = "price")
     private Double price;
 
+    @Column(name = "longitude")
+    private Double longitude;
+
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Transient
+    private Boolean isRented;
+
+    @Transient
+    private int timesRented;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -51,6 +63,9 @@ public class Vehicle implements Serializable {
 
     @OneToMany(mappedBy = "vehicle")
     private List<Reservation> reservations;
+
+    @OneToMany(mappedBy = "vehicle")
+    private List<Image> images;
 
     public Vehicle(){}
 
@@ -141,6 +156,62 @@ public class Vehicle implements Serializable {
         return type;
     }
 
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Boolean getRented() {
+
+        Date now = new Date();
+
+        if(reservations == null)
+            return false;
+
+        for (Reservation r: reservations) {
+            if(r.getStartdate().before(now) && r.getEnddate().after(now)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void setRented(Boolean rented) {
+        isRented = rented;
+    }
+
+    public int getTimesRented() {
+
+        int counter = 0;
+
+        if(reservations == null)
+            return 0;
+
+        for (Reservation r: reservations) {
+            if(r.getStartdate().before(new Date())){
+                counter++;
+            }
+        }
+
+        return counter;
+    }
+
+    public void setTimesRented(int timesRented) {
+        this.timesRented = timesRented;
+    }
+
     public void setType(String type) {
         this.type = type;
     }
@@ -159,5 +230,13 @@ public class Vehicle implements Serializable {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

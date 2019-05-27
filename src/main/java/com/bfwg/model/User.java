@@ -2,10 +2,13 @@ package com.bfwg.model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +25,10 @@ public class User implements UserDetails, Serializable {
   @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  @Column(name = "timestamp", insertable = false, updatable = false)
+  @CreationTimestamp
+  private Date timestamp;
 
   @Column(name = "username")
   private String username;
@@ -60,16 +67,19 @@ public class User implements UserDetails, Serializable {
   @OneToMany(mappedBy = "user")
   private List<Review> reviews;
 
-
   public User(){
     this.rating = -1.0;
   }
 
-  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
   @JoinTable(name = "user_authority",
       joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
       inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
   private List<Authority> authorities;
+
+  public User(){
+
+  }
 
   public Long getId() {
     return id;
@@ -81,6 +91,10 @@ public class User implements UserDetails, Serializable {
 
   public String getUsername() {
     return username;
+  }
+
+  public Date getTimestamp() {
+    return timestamp;
   }
 
   public void setUsername(String username) {
@@ -111,28 +125,32 @@ public class User implements UserDetails, Serializable {
 
     this.lastname = lastname;
   }
- @Transient
+  @Transient
   public Double getRating() {
 
-    if(this.reservations == null || this.reservations.size() == 0){
-      return 0.0;
-    }
+      Double temp = 0.00;
+      int count = 0;
 
-    Double temp = 0.00;
-    int count = 0;
+      if(this.reservations == null)
+          return -1.0;
 
-    for (Reservation r:this.reservations) {
-      for (Review review : r.getReviews()){
-        if(review.getType().equals("user")){
-          temp =+ review.getRating();
-          count++;
-        }
+      for (Reservation r:this.reservations) {
+
+          if(r.getReviews() == null)
+              continue;
+
+          for (Review review : r.getReviews()){
+              if(review.getType().equals("user")){
+                  temp =+ review.getRating();
+                  count++;
+              }
+          }
       }
-    }
 
-    this.rating = temp/count;
+      if(count == 0)
+          return -1.0;
 
-    return rating;
+      return temp/count;
   }
 
   public String getAddress() {
