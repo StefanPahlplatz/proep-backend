@@ -114,9 +114,8 @@ public class VehicleControllerIntegrationTests extends AbstractTest {
     }
 
     @Test
-    public void FindById_ReturnsEmptyResult_WhenVehicleWithIdDoesNotExist() throws Exception {
+    public void FindById_ReturnsNotFound_WhenVehicleWithIdDoesNotExist() throws Exception {
 
-        //Arrange
         //Arrange
         Vehicle vehicleToReturn = new Vehicle();
         vehicleToReturn.setId((long)1);
@@ -124,13 +123,9 @@ public class VehicleControllerIntegrationTests extends AbstractTest {
         given(vehicleService.findById(vehicleToReturn.getId())).willReturn(vehicleToReturn);
 
         //Act Arrange
-        String response = mvc.perform(get("/api/vehicles/2")
+        mvc.perform(get("/api/vehicles/2")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-
-        // Since no vehicle with that ID exists the response should be empty.
-        Assert.isTrue(response.isEmpty());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -325,15 +320,7 @@ public class VehicleControllerIntegrationTests extends AbstractTest {
         vehicleToDelete.setMake("Tesla");
         vehicleToDelete.setUser(goodUser);
 
-        //Mock security Context
-        User badUser = new User();
-        badUser.setId((long)1);
-        Authentication authentication = mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
-        given(securityContext.getAuthentication()).willReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-        given(SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-                .willReturn(badUser);
+
 
         given(vehicleService.findById(vehicleToDelete.getId())).willReturn(null);
 
@@ -355,6 +342,16 @@ public class VehicleControllerIntegrationTests extends AbstractTest {
         vehicleToDelete.setId((long)1);
         vehicleToDelete.setMake("Tesla");
         vehicleToDelete.setUser(applicationUser);
+
+        //Mock security Context
+        User badUser = new User();
+        badUser.setId((long)1);
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        given(securityContext.getAuthentication()).willReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        given(SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+                .willReturn(badUser);
 
         given(vehicleService.findById(vehicleToDelete.getId())).willReturn(vehicleToDelete);
 
