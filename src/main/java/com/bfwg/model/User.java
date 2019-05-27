@@ -77,10 +77,6 @@ public class User implements UserDetails, Serializable {
       inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
   private List<Authority> authorities;
 
-  public User(){
-
-  }
-
   public Long getId() {
     return id;
   }

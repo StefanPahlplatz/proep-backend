@@ -41,7 +41,6 @@ public class VehicleController {
     public List<Vehicle> getAllVehicles(){
 
         return this.vehicleService.findAll();
-
     }
 
     @RequestMapping( method = GET, value="/{vehicleid}")

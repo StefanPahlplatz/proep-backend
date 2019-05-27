@@ -115,8 +115,7 @@ public class UserControllerIntegrationTests extends AbstractTest {
         given(userService.findById(any(Long.class))).willReturn(null);
 
         // Assert
-
-         mvc.perform(get("/api/user/"+user.getId().toString())
+        mvc.perform(get("/api/user/"+user.getId().toString())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
