@@ -32,6 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Value("${jwt.cookie}")
   private String TOKEN_COOKIE;
+  
+  @Value("${security.enable-csrf}")
+  private boolean csrfEnabled;
 
   @Bean
   public TokenAuthenticationFilter jwtAuthenticationTokenFilter() throws Exception {
@@ -84,6 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
         .logoutSuccessHandler(logoutSuccess).deleteCookies(TOKEN_COOKIE);
 
+    http.csrf().disable();
   }
 
 }
