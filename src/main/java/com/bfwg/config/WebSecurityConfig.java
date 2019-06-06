@@ -32,9 +32,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Value("${jwt.cookie}")
   private String TOKEN_COOKIE;
-  
-  @Value("${security.enable-csrf}")
-  private boolean csrfEnabled;
 
   @Bean
   public TokenAuthenticationFilter jwtAuthenticationTokenFilter() throws Exception {
