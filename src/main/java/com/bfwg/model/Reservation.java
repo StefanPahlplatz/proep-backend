@@ -43,8 +43,7 @@ public class Reservation implements Serializable {
     @JoinColumn(name = "vehicle")
     private Vehicle vehicle;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "reservation")
+    @OneToMany(mappedBy = "reservation",fetch = FetchType.EAGER)
     private List<Review> reviews;
 
     public Reservation(){}
