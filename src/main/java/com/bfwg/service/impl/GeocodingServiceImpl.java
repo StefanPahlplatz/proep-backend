@@ -57,7 +57,9 @@ public class GeocodingServiceImpl implements GeocodingService {
 
         Point point = new Point();
 
-        URL url = new URL(forwardAddress+city+"&format=json");
+        String address = city.replace(" ","%20");
+
+        URL url = new URL(forwardAddress+address+"&format=json");
 
         String str = getJson(url);
 
