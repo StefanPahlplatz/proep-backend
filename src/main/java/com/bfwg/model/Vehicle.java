@@ -1,5 +1,7 @@
 package com.bfwg.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -58,16 +60,21 @@ public class Vehicle implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "vehicle")
     private List<Available> availables;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "vehicle")
     private List<Reservation> reservations;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "vehicle")
     private List<Image> images;
 
-    public Vehicle(){}
+    public Vehicle(){
+
+    }
 
     public Vehicle(String make, String model,String type, int mileage, String registration, String colour, Double price, User user){
         this.make = make;

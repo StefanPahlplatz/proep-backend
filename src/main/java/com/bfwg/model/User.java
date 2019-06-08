@@ -57,12 +57,15 @@ public class User implements UserDetails, Serializable {
   @Transient
   private Double rating;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "user")
   private List<Vehicle> vehicles;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "user")
   private List<Reservation> reservations;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "user")
   private List<Review> reviews;
 
