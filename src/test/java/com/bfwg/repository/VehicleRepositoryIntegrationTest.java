@@ -63,9 +63,9 @@ public class VehicleRepositoryIntegrationTest {
         user2 = new User();
         user2.setUsername("testUser2");
 
-        vehicle1 = new Vehicle("BMW", "X5","Luxury", 20000, "BD51SMR","red", 300.00,user1);
-        vehicle2 = new Vehicle("Mercedes", "Sl","Luxury", 10000, "BD51SMS","blue", 100.00,user2);
-        vehicle3 = new Vehicle("Lexus", "t3","Luxury", 40000, "BD51SMX","green", 500.00,user2);
+        vehicle1 = new Vehicle("BMW", "X5","Luxury", 20000, "BD51SMR","red", 30000.00,user1);
+        vehicle2 = new Vehicle("Mercedes", "Sl","Luxury", 10000, "BD51SMS","blue", 10000.00,user2);
+        vehicle3 = new Vehicle("Lexus", "t3","Luxury", 40000, "BD51SMX","green", 50000.00,user2);
 
         vehicle1.setLatitude(42.29);
         vehicle1.setLongitude(-71.1);
@@ -108,7 +108,7 @@ public class VehicleRepositoryIntegrationTest {
     public void whenFindByPriceBetween_thenReturnVehicleList(){
 
         // when
-        List<Vehicle> found = vehicleRepository.findByPriceBetween(200.00,400.00);
+        List<Vehicle> found = vehicleRepository.findByPriceBetween(20000.00,40000.00);
 
         // then
         assertThat(found.get(0).getRegistration()).
