@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.awt.*;
+
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @CrossOrigin
@@ -28,6 +30,19 @@ public class GeocodingController {
             String address = this.geocodingService.findAddressByPosition(lon,lat);
 
             return new ResponseEntity<>(address,HttpStatus.OK);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>("there was a problem with the external api", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping( method = GET, value="/address/{address}")
+    public ResponseEntity findPositionByAddress(@PathVariable(value = "address")String address){
+
+        try{
+            Point location = this.geocodingService.findPointByCity(address);
+
+            return new ResponseEntity<>(location,HttpStatus.OK);
         }
         catch(Exception e){
             return new ResponseEntity<>("there was a problem with the external api", HttpStatus.BAD_REQUEST);
