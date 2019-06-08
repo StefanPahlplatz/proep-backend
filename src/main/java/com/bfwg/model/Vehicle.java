@@ -5,12 +5,13 @@ import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.core.io.ClassPathResource;
 
 import javax.persistence.*;
+import java.io.IOException;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Entity
 @Table(name = "vehicle")
@@ -237,7 +238,16 @@ public class Vehicle implements Serializable {
         this.reservations = reservations;
     }
 
-    public Set<Image> getImages() {
+    public Set<Image> getImages() throws IOException {
+
+        if(images == null || images.size() == 0){
+            String img = Paths.get(new ClassPathResource("/static/images/").getURI()).toString()+"\\generic.jpg";
+            Image image = new Image(img);
+            HashSet set = new HashSet<Image>();
+            set.add(image);
+            return set;
+        }
+
         return images;
     }
 
