@@ -1,11 +1,10 @@
 package com.bfwg.service;
 
-import java.awt.*;
-import java.net.MalformedURLException;
+import com.bfwg.model.Location;
 
 public interface GeocodingService {
 
-    Point findPointByCity(String city) throws Exception;
+    Location findPointByCity(String city) throws Exception;
 
     String findAddressByPosition(Double longitude, Double latitude) throws Exception;
 }

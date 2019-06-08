@@ -2,6 +2,7 @@ package com.bfwg.rest;
 
 
 import com.bfwg.exception.ResourceConflictException;
+import com.bfwg.model.Location;
 import com.bfwg.model.User;
 import com.bfwg.model.Vehicle;
 import com.bfwg.service.AvailableService;
@@ -128,16 +129,16 @@ public class VehicleController {
     @RequestMapping("/city/{city}")
     public List<Vehicle> findByCity(@PathVariable(value = "city") String city){
 
-        Point point;
+        Location location;
 
         try{
-            point = this.geocodingService.findPointByCity(city);
+            location = this.geocodingService.findPointByCity(city);
         }
         catch(Exception e){
             return new ArrayList<>();
         }
 
-        return vehicleService.findByLocation(point.getY(),point.getX(),15.0);
+        return vehicleService.findByLocation(location.getLongitude(),location.getLatitude(),15.0);
     }
 
 

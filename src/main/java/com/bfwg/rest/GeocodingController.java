@@ -1,5 +1,6 @@
 package com.bfwg.rest;
 
+import com.bfwg.model.Location;
 import com.bfwg.service.GeocodingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class GeocodingController {
     public ResponseEntity findPositionByAddress(@PathVariable(value = "address")String address){
 
         try{
-            Point location = this.geocodingService.findPointByCity(address);
+            Location location = this.geocodingService.findPointByCity(address);
 
             return new ResponseEntity<>(location,HttpStatus.OK);
         }
