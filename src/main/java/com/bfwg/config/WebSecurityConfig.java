@@ -72,6 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   private AuthenticationFailureHandler authenticationFailureHandler;
 
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().ignoringAntMatchers("/api/login", "/api/signup")
