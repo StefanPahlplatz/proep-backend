@@ -72,6 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   private AuthenticationFailureHandler authenticationFailureHandler;
 
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().ignoringAntMatchers("/api/login", "/api/signup")
@@ -83,6 +84,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .successHandler(authenticationSuccessHandler).failureHandler(authenticationFailureHandler)
         .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
         .logoutSuccessHandler(logoutSuccess).deleteCookies(TOKEN_COOKIE);
+
+    http.authorizeRequests().antMatchers("/").permitAll().and().authorizeRequests()
+            .antMatchers("/console/**").permitAll();
+
+    http.csrf().disable();
+
+    http.headers().frameOptions().disable();
+
   }
 
 }
