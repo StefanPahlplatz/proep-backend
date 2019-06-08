@@ -84,6 +84,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
         .logoutSuccessHandler(logoutSuccess).deleteCookies(TOKEN_COOKIE);
 
+    http.authorizeRequests().antMatchers("/").permitAll().and().authorizeRequests()
+            .antMatchers("/console/**").permitAll();
+
+    http.csrf().disable();
+
+    http.headers().frameOptions().disable();
+
   }
 
 }
