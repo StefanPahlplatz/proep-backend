@@ -238,16 +238,7 @@ public class Vehicle implements Serializable {
         this.reservations = reservations;
     }
 
-    public Set<Image> getImages() throws IOException {
-
-        if(images == null || images.size() == 0){
-            String img = Paths.get(new ClassPathResource("/static/images/generic.jpg").getURI()).toString();
-            Image image = new Image(img);
-            HashSet set = new HashSet<Image>();
-            set.add(image);
-            return set;
-        }
-
+    public Set<Image> getImages() {
         return images;
     }
 
