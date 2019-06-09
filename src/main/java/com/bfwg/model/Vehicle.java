@@ -241,7 +241,7 @@ public class Vehicle implements Serializable {
     public Set<Image> getImages() throws IOException {
 
         if(images == null || images.size() == 0){
-            String img = Paths.get(new ClassPathResource("/static/images/").getURI()).toString()+"\\generic.jpg";
+            String img = Paths.get(new ClassPathResource("/static/images/generic.jpg").getURI()).toString();
             Image image = new Image(img);
             HashSet set = new HashSet<Image>();
             set.add(image);
