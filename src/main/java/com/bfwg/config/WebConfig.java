@@ -26,7 +26,8 @@ public class WebConfig extends WebMvcConfigurationSupport {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-        .allowedOrigins("https://airrnd.netlify.com");
+        .allowedOrigins("https://airrnd.netlify.com")
+        .allowedOrigins("http://localhost:4200");
     }
 
     @Bean
