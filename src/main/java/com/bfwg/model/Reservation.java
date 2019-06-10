@@ -1,5 +1,7 @@
 package com.bfwg.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -41,7 +43,7 @@ public class Reservation implements Serializable {
     @JoinColumn(name = "vehicle")
     private Vehicle vehicle;
 
-    @OneToMany(mappedBy = "reservation")
+    @OneToMany(mappedBy = "reservation",fetch = FetchType.EAGER)
     private List<Review> reviews;
 
     public Reservation(){}

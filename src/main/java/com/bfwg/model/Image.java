@@ -4,11 +4,12 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "image")
-public class Image {
+public class Image implements Serializable {
 
     @Id
     @NotNull
@@ -26,6 +27,12 @@ public class Image {
     @ManyToOne
     @JoinColumn(name = "vehicle")
     private Vehicle vehicle;
+
+    public Image(){}
+
+    public Image(String path){
+        this.path = path;
+    }
 
     public Long getId() {
         return id;

@@ -1,13 +1,17 @@
 package com.bfwg.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.core.io.ClassPathResource;
 
 import javax.persistence.*;
+import java.io.IOException;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Entity
 @Table(name = "vehicle")
@@ -58,16 +62,18 @@ public class Vehicle implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "vehicle")
-    private List<Available> availables;
+    @OneToMany(mappedBy = "vehicle",fetch = FetchType.EAGER)
+    private Set<Available> availables;
 
-    @OneToMany(mappedBy = "vehicle")
-    private List<Reservation> reservations;
+    @OneToMany(mappedBy = "vehicle",fetch = FetchType.EAGER)
+    private Set<Reservation> reservations;
 
-    @OneToMany(mappedBy = "vehicle")
-    private List<Image> images;
+    @OneToMany(mappedBy = "vehicle",fetch = FetchType.EAGER)
+    private Set<Image> images;
 
-    public Vehicle(){}
+    public Vehicle(){
+
+    }
 
     public Vehicle(String make, String model,String type, int mileage, String registration, String colour, Double price, User user){
         this.make = make;
@@ -216,27 +222,27 @@ public class Vehicle implements Serializable {
         this.type = type;
     }
 
-    public List<Available> getAvailables() {
+    public Set<Available> getAvailables() {
         return availables;
     }
 
-    public void setAvailables(List<Available> availables) {
+    public void setAvailables(Set<Available> availables) {
         this.availables = availables;
     }
 
-    public List<Reservation> getReservations() {
+    public Set<Reservation> getReservations() {
         return reservations;
     }
 
-    public void setReservations(List<Reservation> reservations) {
+    public void setReservations(Set<Reservation> reservations) {
         this.reservations = reservations;
     }
 
-    public List<Image> getImages() {
+    public Set<Image> getImages() {
         return images;
     }
 
-    public void setImages(List<Image> images) {
+    public void setImages(Set<Image> images) {
         this.images = images;
     }
 }

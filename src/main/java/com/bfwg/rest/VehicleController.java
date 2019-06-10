@@ -2,6 +2,7 @@ package com.bfwg.rest;
 
 
 import com.bfwg.exception.ResourceConflictException;
+import com.bfwg.model.Location;
 import com.bfwg.model.User;
 import com.bfwg.model.Vehicle;
 import com.bfwg.service.AvailableService;
@@ -24,6 +25,7 @@ import java.util.List;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+@CrossOrigin
 @RestController
 @RequestMapping( value="/api/vehicles", produces = MediaType.APPLICATION_JSON_VALUE)
 public class VehicleController {
@@ -126,16 +128,16 @@ public class VehicleController {
     @RequestMapping("/city/{city}")
     public List<Vehicle> findByCity(@PathVariable(value = "city") String city){
 
-        Point point;
+        Location location;
 
         try{
-            point = this.geocodingService.findPointByCity(city);
+            location = this.geocodingService.findPointByCity(city);
         }
         catch(Exception e){
             return new ArrayList<>();
         }
 
-        return vehicleService.findByLocation(point.getY(),point.getX(),15.0);
+        return vehicleService.findByLocation(location.getLongitude(),location.getLatitude(),15.0);
     }
 
 

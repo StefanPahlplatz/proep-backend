@@ -1,5 +1,6 @@
 package com.bfwg.service.impl;
 
+import com.bfwg.model.Location;
 import com.bfwg.service.GeocodingService;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.json.JSONArray;
@@ -53,11 +54,13 @@ public class GeocodingServiceImpl implements GeocodingService {
         return str;
     }
 
-    public Point findPointByCity(String city) throws Exception {
+    public Location findPointByCity(String city) throws Exception {
 
-        Point point = new Point();
+        Location location = new Location();
 
-        URL url = new URL(forwardAddress+city+"&format=json");
+        String address = city.replace(" ","%20");
+
+        URL url = new URL(forwardAddress+address+"&format=json");
 
         String str = getJson(url);
 
@@ -65,13 +68,11 @@ public class GeocodingServiceImpl implements GeocodingService {
 
         JSONObject res = obj.getJSONObject(0);
 
-        Double lon = res.getDouble("lon");
+        location.setLongitude(res.getDouble("lon"));
 
-        Double lat = res.getDouble("lat");
+        location.setLatitude(res.getDouble("lat"));
 
-        point.setLocation(lat,lon);
-
-        return point;
+        return location;
     }
 
     @Override

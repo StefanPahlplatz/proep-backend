@@ -23,7 +23,8 @@ public class Authority implements GrantedAuthority {
     @Column(name="name")
     UserRoleName name;
 
-    @ManyToMany(mappedBy = "authorities")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)
     List<User> users;
 
     public Authority(){

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -58,14 +59,16 @@ public class User implements UserDetails, Serializable {
   @Transient
   private Double rating;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "user")
-  private List<Vehicle> vehicles;
+  private Set<Vehicle> vehicles;
 
-  @OneToMany(mappedBy = "user")
-  private List<Reservation> reservations;
+  @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+  private Set<Reservation> reservations;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "user")
-  private List<Review> reviews;
+  private Set<Review> reviews;
 
   public User(){
     this.rating = -1.0;
@@ -181,11 +184,11 @@ public class User implements UserDetails, Serializable {
     this.telephone = telephone;
   }
 
-  public List<Vehicle> getVehicles() {
+  public Set<Vehicle> getVehicles() {
     return vehicles;
   }
 
-  public void setVehicles(List<Vehicle> vehicles) {
+  public void setVehicles(Set<Vehicle> vehicles) {
     this.vehicles = vehicles;
   }
 
@@ -193,19 +196,19 @@ public class User implements UserDetails, Serializable {
     this.authorities = authorities;
   }
 
-  public List<Reservation> getReservations() {
+  public Set<Reservation> getReservations() {
     return reservations;
   }
 
-  public void setReservations(List<Reservation> reservations) {
+  public void setReservations(Set<Reservation> reservations) {
     this.reservations = reservations;
   }
 
-  public List<Review> getReviews() {
+  public Set<Review> getReviews() {
     return reviews;
   }
 
-  public void setReviews(List<Review> reviews) {
+  public void setReviews(Set<Review> reviews) {
     this.reviews = reviews;
   }
 

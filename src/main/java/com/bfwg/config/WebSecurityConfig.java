@@ -1,5 +1,6 @@
 package com.bfwg.config;
 
+import com.bfwg.security.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -59,6 +61,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private LogoutSuccess logoutSuccess;
 
   @Autowired
+  private CorsFilter corsFilter;
+
+
+  @Autowired
   public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder)
       throws Exception {
     authenticationManagerBuilder.userDetailsService(jwtUserDetailsService)
@@ -72,6 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   private AuthenticationFailureHandler authenticationFailureHandler;
 
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().ignoringAntMatchers("/api/login", "/api/signup")
@@ -83,6 +90,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .successHandler(authenticationSuccessHandler).failureHandler(authenticationFailureHandler)
         .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
         .logoutSuccessHandler(logoutSuccess).deleteCookies(TOKEN_COOKIE);
+
+    http.addFilterBefore(corsFilter, ChannelProcessingFilter.class);
 
   }
 

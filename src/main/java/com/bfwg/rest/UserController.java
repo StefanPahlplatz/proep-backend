@@ -14,10 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import com.bfwg.exception.ResourceConflictException;
 import com.bfwg.model.User;
@@ -28,6 +25,7 @@ import com.bfwg.service.UserService;
  * Created by fan.jin on 2016-10-15.
  */
 
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
@@ -98,7 +96,7 @@ public class UserController {
    * sure that the user has role "ROLE_USER" to access this endpoint.
    */
   @RequestMapping("/whoami")
-  @PreAuthorize("hasRole('USER')")
+  @PreAuthorize("hasRole('ROLE_USER')")
   public User user() {
     return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
   }
