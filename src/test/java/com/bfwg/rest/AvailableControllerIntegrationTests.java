@@ -194,7 +194,7 @@ public class AvailableControllerIntegrationTests {
             throws Exception {
 
         //Assert
-        mvc.perform(delete("/api/available/delete")
+        mvc.perform(delete("/api/available/")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());

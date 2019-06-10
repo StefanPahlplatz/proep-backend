@@ -4,6 +4,7 @@ import com.bfwg.model.Review;
 import com.bfwg.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,20 +16,13 @@ public class ReviewController {
     @Autowired
     ReviewService reviewService;
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/save")
+    @RequestMapping(method = RequestMethod.PUT, value = "/")
     public Review saveReview(Review review){
         return reviewService.save(review);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/")
-    public Review getReview(Long id){
-        return reviewService.get(id);
+    @RequestMapping(method = RequestMethod.GET, value = "/{reviewId}")
+    public Review getReview(@PathVariable Long reviewId){
+        return reviewService.get(reviewId);
     }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/find")
-    public Review findReview(long id){
-        return reviewService.find(id);
-    }
-
-
 }

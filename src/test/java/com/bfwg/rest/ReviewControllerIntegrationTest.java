@@ -54,7 +54,7 @@ public class ReviewControllerIntegrationTest extends AbstractTest {
 
         given(reviewService.save(any(Review.class))).willReturn(review);
 
-        mvc.perform(put("/api/reviews/save")
+        mvc.perform(put("/api/reviews/")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsBytes(review.getId())))

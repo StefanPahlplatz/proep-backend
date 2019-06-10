@@ -61,7 +61,7 @@ public class UserController {
     return ResponseEntity.accepted().body(result);
   }
 
-  @RequestMapping(method = POST, value = "/signup")
+  @RequestMapping(method =POST , value = "/signup")
   public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest,
       UriComponentsBuilder ucBuilder) {
 

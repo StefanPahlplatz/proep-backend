@@ -22,7 +22,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping( value="/api/available", produces = MediaType.APPLICATION_JSON_VALUE)
-public class  AvailableController {
+public class AvailableController {
 
     @Autowired
     AvailableService availableService;
@@ -45,12 +45,12 @@ public class  AvailableController {
                 startDate, endDate, vehicle);
     }
 
-    @RequestMapping(method = PUT, value = "/save")
+    @RequestMapping(method = PUT, value = "/")
     public Available save(Available availableRequest){
         return availableService.save(availableRequest);
     }
 
-    @RequestMapping(method = DELETE, value = "/delete")
+    @RequestMapping(method = DELETE, value = "/")
     public void delete(Available availableRequest){
         availableService.delete(availableRequest);
     }
