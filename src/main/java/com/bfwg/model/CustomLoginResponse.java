@@ -1,6 +1,8 @@
 package com.bfwg.model;
 
-public class CustomLoginResponse {
+import java.io.Serializable;
+
+public class CustomLoginResponse implements Serializable {
 
     private User loggedInUser;
 
