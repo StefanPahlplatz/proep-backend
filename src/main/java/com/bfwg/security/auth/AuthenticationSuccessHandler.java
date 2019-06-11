@@ -3,6 +3,7 @@ package com.bfwg.security.auth;
 /**
  * Created by fan.jin on 2016-11-07.
  */
+import com.bfwg.model.CustomLoginResponse;
 import com.bfwg.model.User;
 import com.bfwg.model.UserTokenState;
 import com.bfwg.security.TokenHelper;
@@ -55,7 +56,9 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 
 		// JWT is also in the response
 		UserTokenState userTokenState = new UserTokenState(jws, EXPIRES_IN);
-		String jwtResponse = objectMapper.writeValueAsString( userTokenState );
+		CustomLoginResponse customResponse = new CustomLoginResponse(user, userTokenState);
+
+		String jwtResponse = objectMapper.writeValueAsString( customResponse );
 		response.setContentType("application/json");
 		response.getWriter().write( jwtResponse );
 
