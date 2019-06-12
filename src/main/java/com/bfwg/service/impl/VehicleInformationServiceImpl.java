@@ -69,13 +69,13 @@ public class VehicleInformationServiceImpl implements VehicleInformationService 
             String carModel = object.get("handelsbenaming").getAsString();
             String carType = object.get("inrichting").getAsString();
             String color = object.get("eerste_kleur").getAsString();
-            Integer numberOfDoors = object.get("aantal_deuren").getAsInt();
+            String numberOfDoors = object.get("aantal_deuren").getAsString();
 
             vehicle.setMake(carBrand);
             vehicle.setColour(color);
             vehicle.setModel(carModel);
             vehicle.setType(carType);
-            vehicle.setNumberOfDoors(numberOfDoors);
+            vehicle.setNumberOfDoors(Integer.parseInt(numberOfDoors));
 
             return new VehicleEnrichmentResponse(true, vehicle);
 

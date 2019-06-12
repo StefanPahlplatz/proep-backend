@@ -53,13 +53,13 @@ public class Vehicle implements Serializable {
     private Double latitude;
 
     @Column(name = "numberOfDoors")
-    private int numberOfDoors;
+    private Integer numberOfDoors;
 
-    public int getNumberOfDoors() {
+    public Integer getNumberOfDoors() {
         return numberOfDoors;
     }
 
-    public void setNumberOfDoors(int numberOfDoors) {
+    public void setNumberOfDoors(Integer numberOfDoors) {
         this.numberOfDoors = numberOfDoors;
     }
 
