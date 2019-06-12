@@ -7,6 +7,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.bfwg.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,8 @@ import com.bfwg.model.User;
 import com.bfwg.model.UserRequest;
 import com.bfwg.service.UserService;
 
+import javax.mail.MessagingException;
+
 /**
  * Created by fan.jin on 2016-10-15.
  */
@@ -32,6 +36,9 @@ public class UserController {
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private EmailService emailService;
 
 
   @RequestMapping(method = GET, value = "/user/{userId}")
@@ -70,6 +77,14 @@ public class UserController {
     User user = this.userService.save(userRequest);
     HttpHeaders headers = new HttpHeaders();
     headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+    if(user.getEmail()!= null){
+      try {
+        this.emailService.completeRegistration(user);
+      }
+      catch (MessagingException e) {
+        e.printStackTrace();
+      }
+    }
     return new ResponseEntity<>(user, HttpStatus.CREATED);
   }
 
