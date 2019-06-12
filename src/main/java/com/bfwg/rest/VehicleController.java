@@ -3,10 +3,7 @@ package com.bfwg.rest;
 
 import com.bfwg.exception.ResourceConflictException;
 import com.bfwg.model.*;
-import com.bfwg.service.AvailableService;
-import com.bfwg.service.GeocodingService;
-import com.bfwg.service.VehicleInformationService;
-import com.bfwg.service.VehicleService;
+import com.bfwg.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.mail.MessagingException;
 import javax.xml.ws.Response;
 import java.awt.*;
 import java.text.ParseException;
@@ -42,6 +40,9 @@ public class VehicleController {
 
     @Autowired
     VehicleInformationService vehicleInformationService;
+
+    @Autowired
+    EmailService emailService;
 
     @RequestMapping( method = GET, value="/")
     public List<Vehicle> getAllVehicles(){
@@ -89,6 +90,14 @@ public class VehicleController {
         }
 
         Vehicle vehicle = this.vehicleService.save(response.getVehicle());
+
+        if(vehicle.getUser().getEmail()!=null){
+            try{
+                this.emailService.completeRegistrationOwner(vehicle);
+            } catch(MessagingException e){
+                e.printStackTrace();
+            }
+        }
 
         return new ResponseEntity<>(vehicle, HttpStatus.CREATED);
     }

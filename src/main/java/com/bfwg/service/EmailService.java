@@ -10,7 +10,7 @@ public interface EmailService {
 
     void completeRegistration(User user) throws MessagingException;
 
-    void completeRegistrationOwner(User user, Vehicle vehicle) throws MessagingException;
+    void completeRegistrationOwner(Vehicle vehicle) throws MessagingException;
 
     void makeReservation(Reservation reservation) throws MessagingException;
 
