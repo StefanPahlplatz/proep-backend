@@ -39,6 +39,9 @@ public class VehicleController {
     GeocodingService geocodingService;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     VehicleInformationService vehicleInformationService;
 
     @Autowired
@@ -78,6 +81,12 @@ public class VehicleController {
             throw new ResourceConflictException(existVehicle.getId(), "A vehicle with this registration already exists!");
         }
 
+        User existingUser = userService.findById(vehiclerequest.getVehicleId());
+
+        if (existingUser == null){
+            return new ResponseEntity<>("The specified user id was not valid", HttpStatus.BAD_REQUEST);
+        }
+
         VehicleEnrichmentResponse response =
                 vehicleInformationService.EnrichVehicleData(vehiclerequest);
 
@@ -89,14 +98,18 @@ public class VehicleController {
             return new ResponseEntity<>(response.getErrorMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        Vehicle vehicle = this.vehicleService.save(response.getVehicle());
+        Vehicle newVehicle = response.getVehicle();
+
+        newVehicle.setUser(existingUser);
+
+        Vehicle vehicle = this.vehicleService.save(newVehicle);
 
         if(vehicle.getUser().getEmail()!=null){
-            try{
-                this.emailService.completeRegistrationOwner(vehicle);
-            } catch(MessagingException e){
-                e.printStackTrace();
-            }
+//            try{
+//                //this.emailService.completeRegistrationOwner(vehicle);
+//            } catch(MessagingException e){
+//                e.printStackTrace();
+//            }
         }
 
         return new ResponseEntity<>(vehicle, HttpStatus.CREATED);
