@@ -153,7 +153,7 @@ public class VehicleControllerIntegrationTests extends AbstractTest {
         given(vehicleService.findByUser(Matchers.any(User.class))).willReturn(listToReturn);
 
         // Act, Assert
-        mvc.perform(get("/api/vehicles/user")
+        mvc.perform(post("/api/vehicles/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsBytes(owner)))
                 .andExpect(status().isOk())
@@ -173,7 +173,7 @@ public class VehicleControllerIntegrationTests extends AbstractTest {
         given(vehicleService.findByUser(Matchers.any(User.class))).willReturn(null);
 
         // Act, Assert
-        String responseContent = mvc.perform(get("/api/vehicles/user")
+        String responseContent = mvc.perform(post("/api/vehicles/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsBytes(owner)))
                 .andExpect(status().isOk())
