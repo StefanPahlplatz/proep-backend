@@ -1,5 +1,6 @@
 package com.bfwg.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -26,6 +27,7 @@ public class Image implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "vehicle")
+    @JsonIgnore
     private Vehicle vehicle;
 
     public Image(){}
