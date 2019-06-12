@@ -74,7 +74,7 @@ public class VehicleInformationServiceImpl implements VehicleInformationService 
                                  vehicle.getRegistration() +  "in external database");
             }
 
-            Vehicle newVehicle = null;
+            Vehicle newVehicle =  new Vehicle();
 
             JsonObject object = jsonArray.get(0).getAsJsonObject();
             String carBrand = object.get("merk").getAsString();
@@ -91,15 +91,19 @@ public class VehicleInformationServiceImpl implements VehicleInformationService 
 
             Set<Image> images = new HashSet<Image>();
 
-            for(String imagePath: vehicle.getImageLinks()){
-                Image newImage = new Image();
-                newImage.setPath(imagePath);
-                images.add(newImage);
+            if(vehicle.getImageLinks() != null){
+                for(String imagePath: vehicle.getImageLinks()){
+                    Image newImage = new Image();
+                    newImage.setPath(imagePath);
+                    images.add(newImage);
+                }
+
+                newVehicle.setImages(images);
             }
 
-            newVehicle.setImages(images);
 
-            return new VehicleEnrichmentResponse(true, newVehicle);
+
+            return new VehicleEnrichmentResponse(true, newVehicle, new String());
 
         }
         catch (Exception ex){
