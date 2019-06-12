@@ -6,6 +6,7 @@ import com.bfwg.model.ReservationRequest;
 import com.bfwg.model.User;
 import com.bfwg.model.Vehicle;
 import com.bfwg.security.auth.IAuthenticationFacade;
+import com.bfwg.service.EmailService;
 import com.bfwg.service.ReservationService;
 import com.bfwg.service.UserService;
 import com.bfwg.service.VehicleService;
@@ -17,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.sql.Date;
 import java.util.List;
@@ -41,6 +43,9 @@ public class ReservationController {
 
     @Autowired
     VehicleService vehicleService;
+
+    @Autowired
+    EmailService emailService;
 
     @RequestMapping( method = GET, value="/")
     public List<Reservation> getAllReservations(){
@@ -108,6 +113,14 @@ public class ReservationController {
         newReservation.setEnddate(parsedEndDate);
 
         Reservation reservation = this.reservationService.save(newReservation);
+
+        if(reservation.getUser().getEmail()!=null){
+            try {
+                this.emailService.makeReservation(reservation);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+        }
 
         if(reservation != null){
             return new ResponseEntity<>(reservation, HttpStatus.CREATED);
