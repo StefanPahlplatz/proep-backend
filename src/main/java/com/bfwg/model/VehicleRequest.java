@@ -39,4 +39,13 @@ public class VehicleRequest {
         this.registration = registration;
         this.imageLinks = imageLinks;
     }
+
+    public VehicleRequest(Long vehicleId, String registration){
+        this.vehicleId = vehicleId;
+        this.registration = registration;
+    }
+
+    public VehicleRequest(){
+
+    }
 }

@@ -23,6 +23,11 @@ import com.bfwg.security.auth.LogoutSuccess;
 import com.bfwg.security.auth.RestAuthenticationEntryPoint;
 import com.bfwg.security.auth.TokenAuthenticationFilter;
 import com.bfwg.service.impl.CustomUserDetailsService;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 /**
  * Created by fan.jin on 2016-10-19.
@@ -49,6 +54,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(Arrays.asList("*"));
+    configuration.setAllowedMethods(Arrays.asList("*"));
+    configuration.setAllowedHeaders(Arrays.asList("*"));
+    configuration.setAllowCredentials(true);
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
   }
 
   @Autowired
@@ -81,8 +98,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().ignoringAntMatchers("/api/login", "/api/signup")
-        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
+    http.csrf().disable()//.ignoringAntMatchers("/api/login", "/api/signup", "/api/vehicles/user")
+        //.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
         .addFilterBefore(jwtAuthenticationTokenFilter(), BasicAuthenticationFilter.class)

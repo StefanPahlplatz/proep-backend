@@ -60,6 +60,10 @@ public class ReservationRequest {
         this.price = price;
     }
 
+    public ReservationRequest(){
+
+    }
+
 
 
 
