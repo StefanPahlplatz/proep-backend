@@ -114,21 +114,23 @@ public class ReservationController {
 
         Reservation reservation = this.reservationService.save(newReservation);
 
-        if(reservation.getUser().getEmail()!=null){
-            try {
-                this.emailService.makeReservation(reservation);
-            } catch (MessagingException e) {
-                e.printStackTrace();
+        if(reservation.getUser()!=null){
+            if(reservation.getUser().getEmail()!=null){
+                try {
+                    this.emailService.makeReservation(reservation);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
-        if(reservation != null){
-            return new ResponseEntity<>(reservation, HttpStatus.CREATED);
-        }
-        else{
+        if(reservation.getUser() == null){
             //the vehicle is not available at the specified dates
             return new ResponseEntity<>("Could not create the reservation because" +
                     " vehicle is not available at the selected date", HttpStatus.BAD_REQUEST);
+        }
+        else{
+            return new ResponseEntity<>(reservation, HttpStatus.CREATED);
         }
     }
 
