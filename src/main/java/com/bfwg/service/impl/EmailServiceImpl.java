@@ -53,7 +53,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void completeRegistrationOwner(User user, Vehicle vehicle) throws MessagingException {
+    public void completeRegistrationOwner(Vehicle vehicle) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
         final Context context = new Context();
@@ -64,11 +64,11 @@ public class EmailServiceImpl implements EmailService {
         model.put("colour", vehicle.getColour());
         model.put("model", vehicle.getModel());
         model.put("price", vehicle.getPrice());
-        model.put("firstname", user.getFirstname());
+        model.put("firstname", vehicle.getUser().getFirstname());
         context.setVariables(model);
 
         String htmlOwner = templateEngine.process("templateRegistrationOwner", context);
-        helper.setTo(user.getEmail());
+        helper.setTo(vehicle.getUser().getEmail());
         helper.setText(htmlOwner, true);
         helper.setSubject("AirRnD - Registration");
         javaMailSender.send(message);
