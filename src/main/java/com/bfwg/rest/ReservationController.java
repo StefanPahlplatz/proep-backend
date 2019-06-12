@@ -127,7 +127,8 @@ public class ReservationController {
         }
         else{
             //the vehicle is not available at the specified dates
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Could not create the reservation because" +
+                    " vehicle is not available at the selected date", HttpStatus.BAD_REQUEST);
         }
     }
 

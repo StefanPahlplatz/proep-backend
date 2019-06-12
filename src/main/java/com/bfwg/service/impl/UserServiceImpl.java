@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     return u;
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
+  //@PreAuthorize("hasRole('ADMIN')")
   public User findById(Long id) throws AccessDeniedException {
     User u = userRepository.findOne(id);
     return u;
