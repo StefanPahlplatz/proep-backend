@@ -78,16 +78,6 @@ public class ReservationController {
         Date parsedStartdate = Date.valueOf(request.getStartDate());
         Date parsedEndDate = Date.valueOf(request.getEndDate());
 
-        Reservation existingReservation;
-        Long reservationId = 0L;
-
-        do{
-            reservationId = new Random().nextLong();
-            existingReservation = reservationService.findById(reservationId);
-        }
-        while(existingReservation != null);
-
-
         User existingUser = userService.findById(request.getUserId());
         if (existingUser == null){
             return new ResponseEntity<>("Cannot create reservation for user with id" +
@@ -111,8 +101,6 @@ public class ReservationController {
         }
 
         Reservation newReservation = new Reservation();
-
-        newReservation.setId(reservationId);
         newReservation.setPrice(request.getPrice());
         newReservation.setUser(existingUser);
         newReservation.setVehicle(existingVehicle);

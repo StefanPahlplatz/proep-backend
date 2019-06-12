@@ -2,10 +2,7 @@ package com.bfwg.rest;
 
 
 import com.bfwg.exception.ResourceConflictException;
-import com.bfwg.model.Location;
-import com.bfwg.model.User;
-import com.bfwg.model.Vehicle;
-import com.bfwg.model.VehicleEnrichmentResponse;
+import com.bfwg.model.*;
 import com.bfwg.service.AvailableService;
 import com.bfwg.service.GeocodingService;
 import com.bfwg.service.VehicleInformationService;
@@ -61,7 +58,7 @@ public class VehicleController {
         return new ResponseEntity<>(vehicle,HttpStatus.OK);
     }
 
-    @RequestMapping (method = GET, value="/user")
+    @RequestMapping (method = POST, value="/user")
     public List<Vehicle> findByOwner (@RequestBody User user){
 
         return this.vehicleService.findByUser(user);
@@ -74,10 +71,10 @@ public class VehicleController {
     }
 
     @RequestMapping(method = POST, value = "/")
-    public ResponseEntity<?> addVehicle(@RequestBody Vehicle vehiclerequest){
+    public ResponseEntity<?> addVehicle(@RequestBody VehicleRequest vehiclerequest){
         Vehicle existVehicle = this.vehicleService.findByRegistration(vehiclerequest.getRegistration());
         if(existVehicle != null){
-            throw new ResourceConflictException(vehiclerequest.getId(), "A vehicle with this registration already exists!");
+            throw new ResourceConflictException(existVehicle.getId(), "A vehicle with this registration already exists!");
         }
 
         VehicleEnrichmentResponse response =
