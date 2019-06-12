@@ -5,8 +5,10 @@ import com.bfwg.exception.ResourceConflictException;
 import com.bfwg.model.Location;
 import com.bfwg.model.User;
 import com.bfwg.model.Vehicle;
+import com.bfwg.model.VehicleEnrichmentResponse;
 import com.bfwg.service.AvailableService;
 import com.bfwg.service.GeocodingService;
+import com.bfwg.service.VehicleInformationService;
 import com.bfwg.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +16,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import javax.xml.ws.Response;
 import java.awt.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,6 +42,9 @@ public class VehicleController {
 
     @Autowired
     GeocodingService geocodingService;
+
+    @Autowired
+    VehicleInformationService vehicleInformationService;
 
     @RequestMapping( method = GET, value="/")
     public List<Vehicle> getAllVehicles(){
@@ -72,7 +79,19 @@ public class VehicleController {
         if(existVehicle != null){
             throw new ResourceConflictException(vehiclerequest.getId(), "A vehicle with this registration already exists!");
         }
-        Vehicle vehicle = this.vehicleService.save(vehiclerequest);
+
+        VehicleEnrichmentResponse response =
+                vehicleInformationService.EnrichVehicleData(vehiclerequest);
+
+        if (response.getErrorMessage().contains("Could not find information")){
+            return new ResponseEntity<>(response.getErrorMessage(), HttpStatus.NOT_FOUND);
+        }
+
+        if(!response.isEnrichmentSuccess()){
+            return new ResponseEntity<>(response.getErrorMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        Vehicle vehicle = this.vehicleService.save(response.getVehicle());
 
         return new ResponseEntity<>(vehicle, HttpStatus.CREATED);
     }

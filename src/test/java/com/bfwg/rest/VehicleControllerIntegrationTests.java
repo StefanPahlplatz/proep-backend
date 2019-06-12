@@ -1,6 +1,7 @@
 package com.bfwg.rest;
 
 import com.bfwg.AbstractTest;
+import com.bfwg.model.Location;
 import com.bfwg.model.User;
 import com.bfwg.model.Vehicle;
 import com.bfwg.security.auth.IAuthenticationFacade;
@@ -24,15 +25,16 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -141,11 +143,14 @@ public class VehicleControllerIntegrationTests extends AbstractTest {
         ownedVehicle.setId((long)1);
         ownedVehicle.setMake("Tesla");
 
-        List<Vehicle> ownedVehicles = new ArrayList<>();
+        Set<Vehicle> ownedVehicles = new HashSet<>();
         ownedVehicles.add(ownedVehicle);
         owner.setVehicles(ownedVehicles);
 
-        given(vehicleService.findByUser(Matchers.any(User.class))).willReturn(ownedVehicles);
+        List<Vehicle> listToReturn = new ArrayList<>();
+        listToReturn.add(ownedVehicle);
+
+        given(vehicleService.findByUser(Matchers.any(User.class))).willReturn(listToReturn);
 
         // Act, Assert
         mvc.perform(get("/api/vehicles/user")
@@ -231,9 +236,10 @@ public class VehicleControllerIntegrationTests extends AbstractTest {
         // Arrange
         Vehicle firstVehicle = new Vehicle();
         Vehicle secondVehicle = new Vehicle();
-        Point cityCoordinates = new Point();
-        cityCoordinates.x = 10;
-        cityCoordinates.y = 20;
+        Location cityCoordinates = new Location();
+
+        cityCoordinates.setLatitude(10.0);
+        cityCoordinates.setLongitude(20.0);
 
         firstVehicle.setId((long)1);
         firstVehicle.setMake("Jeep");
@@ -249,7 +255,7 @@ public class VehicleControllerIntegrationTests extends AbstractTest {
         SuvVehicles.add(secondVehicle);
 
         given(geoService.findPointByCity("NY")).willReturn(cityCoordinates);
-        given(vehicleService.findByLocation(cityCoordinates.getY(), cityCoordinates.getX(), 15.0))
+        given(vehicleService.findByLocation(cityCoordinates.getLongitude(), cityCoordinates.getLatitude(), 15.0))
                 .willReturn(SuvVehicles);
 
         //Act Assert
@@ -264,12 +270,12 @@ public class VehicleControllerIntegrationTests extends AbstractTest {
             throws Exception {
 
         // Arrange
-        Point cityCoordinates = new Point();
-        cityCoordinates.x = 10;
-        cityCoordinates.y = 20;
+        Location cityCoordinates = new Location();
+        cityCoordinates.setLatitude(10.0);
+        cityCoordinates.setLongitude(20.0);
 
         given(geoService.findPointByCity("NY")).willReturn(cityCoordinates);
-        given(vehicleService.findByLocation(cityCoordinates.getY(), cityCoordinates.getX(), 15.0))
+        given(vehicleService.findByLocation(cityCoordinates.getLongitude(), cityCoordinates.getLatitude(), 15.0))
                 .willReturn(null);
 
         //Act Assert
@@ -319,8 +325,6 @@ public class VehicleControllerIntegrationTests extends AbstractTest {
         vehicleToDelete.setId((long)1);
         vehicleToDelete.setMake("Tesla");
         vehicleToDelete.setUser(goodUser);
-
-
 
         given(vehicleService.findById(vehicleToDelete.getId())).willReturn(null);
 
