@@ -68,13 +68,18 @@ public class ReservationController {
         return new ResponseEntity<>(reservation,HttpStatus.OK);
     }
 
-    @RequestMapping(method = POST, value = "/")
-    public ResponseEntity<?> addReservation(@Valid @RequestBody Reservation reservationrequest){
-        Reservation existReservation = this.reservationService.findById(reservationrequest.getId());
+    @RequestMapping(method = POST, value = "/user/{userid}/vehicle/{vehicleid}")
+    public ResponseEntity<?> addReservation(@Valid @RequestBody Reservation reservationrequest,
+                                            @PathVariable(value = "userid") Long userid,
+                                            @PathVariable(value = "vehicleid") Long vehicleid){
 
-        if(existReservation != null){
-            throw new ResourceConflictException(reservationrequest.getId(), "A reservation with this id already exists!");
-        }
+        User user = this.userService.findById(userid);
+
+        Vehicle vehicle = this.vehicleService.findById(vehicleid);
+
+        reservationrequest.setUser(user);
+
+        reservationrequest.setVehicle(vehicle);
 
         Reservation reservation = this.reservationService.save(reservationrequest);
 
