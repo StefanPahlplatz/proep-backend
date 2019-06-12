@@ -81,7 +81,7 @@ public class VehicleController {
             throw new ResourceConflictException(existVehicle.getId(), "A vehicle with this registration already exists!");
         }
 
-        User existingUser = userService.findById(vehiclerequest.getVehicleId());
+        User existingUser = userService.findById(vehiclerequest.getUserId());
 
         if (existingUser == null){
             return new ResponseEntity<>("The specified user id was not valid", HttpStatus.BAD_REQUEST);

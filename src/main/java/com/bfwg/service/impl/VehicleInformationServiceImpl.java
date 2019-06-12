@@ -83,10 +83,13 @@ public class VehicleInformationServiceImpl implements VehicleInformationService 
             String color = object.get("eerste_kleur").getAsString();
             String numberOfDoors = object.get("aantal_deuren").getAsString();
 
+
+            newVehicle.setPrice(vehicle.getPrice());
+            newVehicle.setMileage(vehicle.getMiledge());
             newVehicle.setMake(carBrand);
             newVehicle.setColour(color);
             newVehicle.setModel(carModel);
-            newVehicle.setType(carType);
+            newVehicle.setType(carType.toUpperCase());
             newVehicle.setNumberOfDoors(Integer.parseInt(numberOfDoors));
 
             Set<Image> images = new HashSet<Image>();
@@ -100,8 +103,6 @@ public class VehicleInformationServiceImpl implements VehicleInformationService 
 
                 newVehicle.setImages(images);
             }
-
-
 
             return new VehicleEnrichmentResponse(true, newVehicle, new String());
 

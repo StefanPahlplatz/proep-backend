@@ -4,15 +4,41 @@ import java.util.Set;
 
 public class VehicleRequest {
 
-    private Long vehicleId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    private Long userId;
 
     private String registration;
 
-    Set<String> imageLinks;
-
-    public Long getVehicleId() {
-        return vehicleId;
+    public Double getPrice() {
+        return price;
     }
+
+    public int getMiledge() {
+        return miledge;
+    }
+
+
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public void setMiledge(int miledge) {
+        this.miledge = miledge;
+    }
+
+    private Double price;
+
+    private int miledge;
+
+    Set<String> imageLinks;
 
     public String getRegistration() {
         return registration;
@@ -20,10 +46,6 @@ public class VehicleRequest {
 
     public Set<String> getImageLinks() {
         return imageLinks;
-    }
-
-    public void setVehicleId(Long vehicleId) {
-        this.vehicleId = vehicleId;
     }
 
     public void setRegistration(String registration) {
@@ -34,14 +56,22 @@ public class VehicleRequest {
         this.imageLinks = imageLinks;
     }
 
-    public VehicleRequest(Long vehicleId, String registration, Set<String> imageLinks) {
-        this.vehicleId = vehicleId;
+    public VehicleRequest(Long userId, String registration, Double price, int miledge, Set<String> imageLinks) {
+        this.userId = userId;
+        this.registration = registration;
+        this.price = price;
+        this.miledge = miledge;
+        this.imageLinks = imageLinks;
+    }
+
+    public VehicleRequest(Long userId, String registration, Set<String> imageLinks) {
+        this.userId = userId;
         this.registration = registration;
         this.imageLinks = imageLinks;
     }
 
-    public VehicleRequest(Long vehicleId, String registration){
-        this.vehicleId = vehicleId;
+    public VehicleRequest(Long userId, String registration){
+        this.userId = userId;
         this.registration = registration;
     }
 
