@@ -28,7 +28,6 @@ public class AvailableServiceImpl implements AvailableService {
 
     @Override
     public Available save(Available availablerequest) {
-
         return this.availableRepository.save(availablerequest);
     }
 
@@ -41,6 +40,4 @@ public class AvailableServiceImpl implements AvailableService {
     public void delete(Available available) {
         this.availableRepository.delete(available);
     }
-
-
 }

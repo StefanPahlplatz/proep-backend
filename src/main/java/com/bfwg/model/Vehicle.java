@@ -52,6 +52,17 @@ public class Vehicle implements Serializable {
     @Column(name = "latitude")
     private Double latitude;
 
+    @Column(name = "numberOfDoors")
+    private int numberOfDoors;
+
+    public int getNumberOfDoors() {
+        return numberOfDoors;
+    }
+
+    public void setNumberOfDoors(int numberOfDoors) {
+        this.numberOfDoors = numberOfDoors;
+    }
+
     @Transient
     private Boolean isRented;
 

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
@@ -69,15 +70,15 @@ public class User implements UserDetails, Serializable {
   @OneToMany(mappedBy = "user")
   private Set<Review> reviews;
 
+  public User(){
+    this.rating = -1.0;
+  }
+
   @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
   @JoinTable(name = "user_authority",
       joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
       inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
   private List<Authority> authorities;
-
-  public User(){
-
-  }
 
   public Long getId() {
     return id;
@@ -123,7 +124,6 @@ public class User implements UserDetails, Serializable {
 
     this.lastname = lastname;
   }
-
   @Transient
   public Double getRating() {
 
