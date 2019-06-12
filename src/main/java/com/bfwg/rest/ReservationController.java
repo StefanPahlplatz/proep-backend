@@ -76,6 +76,21 @@ public class ReservationController {
         return new ResponseEntity<>(reservation,HttpStatus.OK);
     }
 
+    @PutMapping("/")
+    public ResponseEntity UpdateReservation(@RequestBody Reservation reservation){
+
+        Reservation existingReservation = reservationService.findById(reservation.getId());
+
+        if(existingReservation == null){
+            return new ResponseEntity<>("Cannot update reservation with id " + reservation.getId()
+            + " because it does not exist", HttpStatus.NOT_FOUND);
+        }
+
+        Reservation updatedReservation = reservationService.save(reservation);
+
+        return new ResponseEntity(updatedReservation, HttpStatus.OK);
+    }
+
     @RequestMapping(method = POST, value = "/")
     public ResponseEntity<?> addReservation(
             @RequestBody ReservationRequest request){

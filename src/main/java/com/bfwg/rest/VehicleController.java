@@ -115,8 +115,8 @@ public class VehicleController {
         return new ResponseEntity<>(vehicle, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{vehicle}")
-    public ResponseEntity updateVehicle(@PathVariable (value = "vehicle") Vehicle vehicle){
+    @PutMapping("/")
+    public ResponseEntity updateVehicle(@RequestBody  Vehicle vehicle){
         Vehicle existVehicle = this.vehicleService.findById(vehicle.getId());
 
         if(existVehicle == null){
