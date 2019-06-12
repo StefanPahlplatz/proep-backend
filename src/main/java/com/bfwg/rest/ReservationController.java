@@ -2,6 +2,7 @@ package com.bfwg.rest;
 
 import com.bfwg.exception.ResourceConflictException;
 import com.bfwg.model.Reservation;
+import com.bfwg.model.ReservationRequest;
 import com.bfwg.model.User;
 import com.bfwg.model.Vehicle;
 import com.bfwg.security.auth.IAuthenticationFacade;
@@ -17,7 +18,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.sql.Date;
 import java.util.List;
+import java.util.Random;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -69,14 +72,42 @@ public class ReservationController {
     }
 
     @RequestMapping(method = POST, value = "/")
-    public ResponseEntity<?> addReservation(@Valid @RequestBody Reservation reservationrequest){
-        Reservation existReservation = this.reservationService.findById(reservationrequest.getId());
+    public ResponseEntity<?> addReservation(
+            @RequestBody ReservationRequest request){
 
-        if(existReservation != null){
-            throw new ResourceConflictException(reservationrequest.getId(), "A reservation with this id already exists!");
+        Date parsedStartdate = Date.valueOf(request.getStartDate());
+        Date parsedEndDate = Date.valueOf(request.getEndDate());
+
+        User existingUser = userService.findById(request.getUserId());
+        if (existingUser == null){
+            return new ResponseEntity<>("Cannot create reservation for user with id" +
+                    request.getUserId() + ". User does not exist", HttpStatus.NOT_FOUND);
         }
 
-        Reservation reservation = this.reservationService.save(reservationrequest);
+        Vehicle existingVehicle = vehicleService.findById(request.getVehicleId());
+        if (existingVehicle == null){
+            return new ResponseEntity<>("Cannot create reservation for vehicle with id" +
+                    request.getVehicleId() + ". Vehicle does not exist", HttpStatus.NOT_FOUND);
+        }
+
+        if (parsedStartdate == null){
+            return new ResponseEntity<>("Cannot create a reservation. " +
+                    "Start date was not in a valid format", HttpStatus.BAD_REQUEST);
+        }
+
+        if (parsedEndDate == null){
+            return new ResponseEntity<>("Cannot create a reservation. " +
+                    "End date was not in a valid format", HttpStatus.BAD_REQUEST);
+        }
+
+        Reservation newReservation = new Reservation();
+        newReservation.setPrice(request.getPrice());
+        newReservation.setUser(existingUser);
+        newReservation.setVehicle(existingVehicle);
+        newReservation.setStartdate(parsedStartdate);
+        newReservation.setEnddate(parsedEndDate);
+
+        Reservation reservation = this.reservationService.save(newReservation);
 
         if(reservation != null){
             return new ResponseEntity<>(reservation, HttpStatus.CREATED);
