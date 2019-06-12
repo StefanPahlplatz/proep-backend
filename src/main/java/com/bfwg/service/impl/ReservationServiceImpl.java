@@ -47,8 +47,9 @@ public class ReservationServiceImpl implements ReservationService {
 
         Available available = this.availableService.findByStartdateBeforeAndEnddateAfterAndVehicle(reservation.getStartdate(),reservation.getEnddate(),reservation.getVehicle());
 
+        Reservation reservationNull = new Reservation();
         if(available == null){
-            return null;
+            return reservationNull;
         }
 
         //when the reservation start and end dates match the available entity of the vehicle
