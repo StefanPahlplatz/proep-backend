@@ -45,43 +45,46 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Reservation save(Reservation reservation) {
 
-        Available available = this.availableService.findByStartdateBeforeAndEnddateAfterAndVehicle(reservation.getStartdate(),reservation.getEnddate(),reservation.getVehicle());
+        //Available available = this.availableService.findByStartdateBeforeAndEnddateAfterAndVehicle(reservation.getStartdate(),reservation.getEnddate(),reservation.getVehicle());
 
-        Reservation reservationNull = new Reservation();
-        if(available == null){
-            return reservationNull;
-        }
+//        Reservation reservationNull = new Reservation();
+//        if(available == null){
+//            return reservationNull;
+//        }
 
-        //when the reservation start and end dates match the available entity of the vehicle
-        if(available.getStartdate().equals(reservation.getStartdate()) && available.getEnddate().equals(reservation.getEnddate())){
-            this.availableService.delete(available);
-            return this.reservationRepository.save(reservation);
-        }
-        //when the available start date is before the reservation start date and the available end date
-        //is after the reservation end date.
-        else if(available.getStartdate().before(reservation.getStartdate()) && available.getEnddate().after(reservation.getEnddate())){
-            available.setEnddate(reservation.getStartdate());
-            this.availableService.save(available);
-            this.availableService.save(new Available(reservation.getEnddate(),available.getEnddate(),reservation.getVehicle()));
-            return this.reservationRepository.save(reservation);
-        }
-        //when the available start date is before the reservation start date and the available end date
-        //is the same as the reservation end date
-        else if(available.getStartdate().before(reservation.getStartdate()) && available.getEnddate().equals(reservation.getEnddate())){
-            available.setEnddate(reservation.getStartdate());
-            this.availableService.save(available);
-            return this.reservationRepository.save(reservation);
-        }
-        //when the available end date is after the reservation end date and the available start date
-        //is the same as the reservation start date
-        else if(available.getEnddate().after(reservation.getEnddate()) && available.getStartdate().equals(reservation.getStartdate())){
-            available.setStartdate(reservation.getEnddate());
-            this.availableService.save(available);
-            return this.reservationRepository.save(reservation);
-        }
-        else{
-            return null;
-        }
+//        //when the reservation start and end dates match the available entity of the vehicle
+//        if(available.getStartdate().equals(reservation.getStartdate()) && available.getEnddate().equals(reservation.getEnddate())){
+//            this.availableService.delete(available);
+//            return this.reservationRepository.save(reservation);
+//        }
+//        //when the available start date is before the reservation start date and the available end date
+//        //is after the reservation end date.
+//        else if(available.getStartdate().before(reservation.getStartdate()) && available.getEnddate().after(reservation.getEnddate())){
+//            available.setEnddate(reservation.getStartdate());
+//            this.availableService.save(available);
+//            this.availableService.save(new Available(reservation.getEnddate(),available.getEnddate(),reservation.getVehicle()));
+//            return this.reservationRepository.save(reservation);
+//        }
+//        //when the available start date is before the reservation start date and the available end date
+//        //is the same as the reservation end date
+//        else if(available.getStartdate().before(reservation.getStartdate()) && available.getEnddate().equals(reservation.getEnddate())){
+//            available.setEnddate(reservation.getStartdate());
+//            this.availableService.save(available);
+//            return this.reservationRepository.save(reservation);
+//        }
+//        //when the available end date is after the reservation end date and the available start date
+//        //is the same as the reservation start date
+//        else if(available.getEnddate().after(reservation.getEnddate()) && available.getStartdate().equals(reservation.getStartdate())){
+//            available.setStartdate(reservation.getEnddate());
+//            this.availableService.save(available);
+//            return this.reservationRepository.save(reservation);
+//        }
+//        else{
+//            return null;
+//        }
+
+        Reservation res = reservationRepository.save(reservation);
+        return res;
     }
 
     @Override

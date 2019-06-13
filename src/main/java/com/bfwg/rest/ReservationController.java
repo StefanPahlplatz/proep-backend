@@ -129,15 +129,15 @@ public class ReservationController {
 
         Reservation reservation = this.reservationService.save(newReservation);
 
-        if (reservation.getUser() != null) {
-            if (reservation.getUser().getEmail() != null) {
-                try {
-                    this.emailService.makeReservation(reservation);
-                } catch (MessagingException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+//        if (reservation.getUser() != null) {
+//            if (reservation.getUser().getEmail() != null) {
+//                try {
+//                    this.emailService.makeReservation(reservation);
+//                } catch (MessagingException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
         return new ResponseEntity<>(reservation, HttpStatus.CREATED);
 
     }

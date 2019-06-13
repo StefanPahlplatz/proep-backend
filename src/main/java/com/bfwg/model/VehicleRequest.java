@@ -24,8 +24,6 @@ public class VehicleRequest {
         return miledge;
     }
 
-
-
     public void setPrice(Double price) {
         this.price = price;
     }
