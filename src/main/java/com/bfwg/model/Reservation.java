@@ -35,6 +35,7 @@ public class Reservation implements Serializable {
     @Column(name = "returned")
     private boolean returned;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user")
     private User user;
