@@ -4,6 +4,7 @@ package com.bfwg.rest;
 import com.bfwg.exception.ResourceConflictException;
 import com.bfwg.model.*;
 import com.bfwg.service.*;
+import org.hibernate.usertype.UserVersionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -47,9 +48,20 @@ public class VehicleController {
     EmailService emailService;
 
     @RequestMapping( method = GET, value="/")
-    public List<Vehicle> getAllVehicles(){
+    public List<VehicleViewModel> getAllVehicles(){
 
-        return this.vehicleService.findAll();
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        List<VehicleViewModel> dtoVehicles = new ArrayList<>();
+
+        vehicles = vehicleService.findAll();
+
+        for(Vehicle vehicle: vehicles){
+            VehicleViewModel newVehicle = new VehicleViewModel(vehicle);
+            dtoVehicles.add(newVehicle);
+        }
+
+        return dtoVehicles;
     }
 
     @RequestMapping( method = GET, value="/{vehicleid}")
