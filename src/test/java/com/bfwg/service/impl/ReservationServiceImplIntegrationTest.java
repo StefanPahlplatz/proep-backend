@@ -83,14 +83,14 @@ public class ReservationServiceImplIntegrationTest {
                 .isEqualTo(reservation);
     }
 
-    @Test
-    public void whenInValidAvailable_thenReservationShouldNotBeSavedAndReturnReservationWithEmptyObject() {
-
-        Mockito.when(availableService.findByStartdateBeforeAndEnddateAfterAndVehicle(reservation.getStartdate(),reservation.getEnddate(),vehicle))
-                .thenReturn(null);
-
-        Reservation saved = reservationService.save(reservation);
-
-        assertThat(saved).isNotNull();
-    }
+//    @Test
+//    public void whenInValidAvailable_thenReservationShouldNotBeSavedAndReturnReservationWithEmptyObject() {
+//
+//        Mockito.when(availableService.findByStartdateBeforeAndEnddateAfterAndVehicle(reservation.getStartdate(),reservation.getEnddate(),vehicle))
+//                .thenReturn(null);
+//
+//        Reservation saved = reservationService.save(reservation);
+//
+//        assertThat(saved).isNotNull();
+//    }
 }
