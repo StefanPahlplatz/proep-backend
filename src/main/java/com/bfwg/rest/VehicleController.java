@@ -122,7 +122,7 @@ public class VehicleController {
 //            }
         }
 
-        return new ResponseEntity<>(vehicle, HttpStatus.CREATED);
+        return new ResponseEntity<>(null, HttpStatus.CREATED);
     }
 
     @PutMapping("/")
