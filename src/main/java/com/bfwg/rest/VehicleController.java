@@ -17,8 +17,7 @@ import javax.xml.ws.Response;
 import java.awt.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -101,6 +100,17 @@ public class VehicleController {
         Vehicle newVehicle = response.getVehicle();
 
         newVehicle.setUser(existingUser);
+
+        Available available = new Available();
+        available.setVehicle(newVehicle);
+        available.setStartdate(new Date(2019,06,12));
+        available.setEnddate(new Date(2019, 9,12));
+
+        Set<Available> availableSet = new HashSet<>();
+
+        availableSet.add(available);
+
+        newVehicle.setAvailables(availableSet);
 
         Vehicle vehicle = this.vehicleService.save(newVehicle);
 
