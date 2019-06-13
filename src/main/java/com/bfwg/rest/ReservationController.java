@@ -29,7 +29,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @CrossOrigin
 @RestController
-@RequestMapping( value="/api/reservation", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/reservation", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ReservationController {
 
     @Autowired
@@ -47,43 +47,43 @@ public class ReservationController {
     @Autowired
     EmailService emailService;
 
-    @RequestMapping( method = GET, value="/")
-    public List<Reservation> getAllReservations(){
+    @RequestMapping(method = GET, value = "/")
+    public List<Reservation> getAllReservations() {
 
         return this.reservationService.findAll();
     }
 
-    @RequestMapping( method = GET, value = "/owner/{ownerid}")
-    public List<Reservation> findByCustomer(@PathVariable(value = "ownerid") Long id){
+    @RequestMapping(method = GET, value = "/owner/{ownerid}")
+    public List<Reservation> findByCustomer(@PathVariable(value = "ownerid") Long id) {
 
         return this.reservationService.findByUser_Id(id);
     }
 
-    @RequestMapping( method = GET, value = "/vehicle/{vehicleid}")
-    public List<Reservation> findByVehicle(@PathVariable(value = "vehicleid") Long id){
+    @RequestMapping(method = GET, value = "/vehicle/{vehicleid}")
+    public List<Reservation> findByVehicle(@PathVariable(value = "vehicleid") Long id) {
 
         return this.reservationService.findByVehicle_Id(id);
     }
 
-    @RequestMapping( method = GET, value = "/{id}")
-    public ResponseEntity findById(@PathVariable(value = "id")Long id){
+    @RequestMapping(method = GET, value = "/{id}")
+    public ResponseEntity findById(@PathVariable(value = "id") Long id) {
         Reservation reservation = this.reservationService.findById(id);
 
-        if(reservation == null){
+        if (reservation == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(reservation,HttpStatus.OK);
+        return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
     @PutMapping("/")
-    public ResponseEntity UpdateReservation(@RequestBody Reservation reservation){
+    public ResponseEntity UpdateReservation(@RequestBody Reservation reservation) {
 
         Reservation existingReservation = reservationService.findById(reservation.getId());
 
-        if(existingReservation == null){
+        if (existingReservation == null) {
             return new ResponseEntity<>("Cannot update reservation with id " + reservation.getId()
-            + " because it does not exist", HttpStatus.NOT_FOUND);
+                    + " because it does not exist", HttpStatus.NOT_FOUND);
         }
 
         Reservation updatedReservation = reservationService.save(reservation);
@@ -93,29 +93,29 @@ public class ReservationController {
 
     @RequestMapping(method = POST, value = "/")
     public ResponseEntity<?> addReservation(
-            @RequestBody ReservationRequest request){
+            @RequestBody ReservationRequest request) {
 
         Date parsedStartdate = Date.valueOf(request.getStartDate());
         Date parsedEndDate = Date.valueOf(request.getEndDate());
 
         User existingUser = userService.findById(request.getUserId());
-        if (existingUser == null){
+        if (existingUser == null) {
             return new ResponseEntity<>("Cannot create reservation for user with id" +
                     request.getUserId() + ". User does not exist", HttpStatus.NOT_FOUND);
         }
 
         Vehicle existingVehicle = vehicleService.findById(request.getVehicleId());
-        if (existingVehicle == null){
+        if (existingVehicle == null) {
             return new ResponseEntity<>("Cannot create reservation for vehicle with id" +
                     request.getVehicleId() + ". Vehicle does not exist", HttpStatus.NOT_FOUND);
         }
 
-        if (parsedStartdate == null){
+        if (parsedStartdate == null) {
             return new ResponseEntity<>("Cannot create a reservation. " +
                     "Start date was not in a valid format", HttpStatus.BAD_REQUEST);
         }
 
-        if (parsedEndDate == null){
+        if (parsedEndDate == null) {
             return new ResponseEntity<>("Cannot create a reservation. " +
                     "End date was not in a valid format", HttpStatus.BAD_REQUEST);
         }
@@ -129,8 +129,8 @@ public class ReservationController {
 
         Reservation reservation = this.reservationService.save(newReservation);
 
-        if(reservation.getUser()!=null){
-            if(reservation.getUser().getEmail()!=null){
+        if (reservation.getUser() != null) {
+            if (reservation.getUser().getEmail() != null) {
                 try {
                     this.emailService.makeReservation(reservation);
                 } catch (MessagingException e) {
@@ -138,15 +138,8 @@ public class ReservationController {
                 }
             }
         }
+        return new ResponseEntity<>(reservation, HttpStatus.CREATED);
 
-        if(reservation.getUser() == null){
-            //the vehicle is not available at the specified dates
-            return new ResponseEntity<>("Could not create the reservation because" +
-                    " vehicle is not available at the selected date", HttpStatus.BAD_REQUEST);
-        }
-        else{
-            return new ResponseEntity<>(reservation, HttpStatus.CREATED);
-        }
     }
 
     @DeleteMapping("/{reservationid}")
@@ -154,14 +147,14 @@ public class ReservationController {
 
         Reservation reservation = this.reservationService.findById(reservationId);
 
-        if(reservation == null){
+        if (reservation == null) {
             return new ResponseEntity<>("there was no reservation in the system, please refresh the page", HttpStatus.NOT_FOUND);
         }
 
         User user = (User) this.authenticationFacade.getPrincipal();
         //User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if(reservation.getUser().getUsername().equals(user.getUsername())){
+        if (reservation.getUser().getUsername().equals(user.getUsername())) {
             this.reservationService.delete(reservation);
 
             return ResponseEntity.noContent().build();
